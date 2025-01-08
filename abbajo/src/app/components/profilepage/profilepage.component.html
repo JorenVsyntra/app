@@ -1,1 +1,34 @@
-<p>profilepage works!</p>
+<!-- profile.component.html -->
+<div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-picture-container">
+        <img [src]="profileData.profilePicture" alt="Profile picture" class="profile-picture">
+        <label class="upload-button">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+          <i class="fas fa-camera"></i>
+        </label>
+      </div>
+      <h2>{{profileData.username}}</h2>
+      <p>@jennywilson</p>
+    </div>
+  
+    <div class="profile-details">
+      <div class="detail-row" *ngFor="let field of ['username', 'email', 'address', 'nickname', 'dob']">
+        <div class="label">{{field | titlecase}}</div>
+        <div class="value-container">
+          <ng-container *ngIf="editField !== field; else editMode">
+            <div class="value">{{profileData[field]}}</div>
+            <button class="edit-button" (click)="onEdit(field)">
+              <i class="fas fa-pencil"></i>
+            </button>
+          </ng-container>
+          <ng-template #editMode>
+            <input [type]="field === 'email' ? 'email' : 'text'"
+                   [(ngModel)]="profileData[field]"
+                   class="edit-input">
+            <button class="save-button" (click)="onSave()">Save</button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
