@@ -1,74 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="src/app/components/loginpage/loginpage.component.css" rel="stylesheet"> -->
+    <title>Document</title>
+    <link rel="stylesheet" href="/Users/jorenvandervelden/Downloads/frontend_eindproef/app/abbajo/src/app/components/loginpage/loginpage.component.css">
 </head>
-<body>
-<div class="login-wrapper">
-        <div class="login-container">
-          <div class="login-card">
-            <div class="logo-section">
-              <h2>Welcome Back</h2>
-            </div>
-            
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-              <div class="form-group">
-                <label for="email">Email Address</label>
-                <div class="input-wrapper">
-                  <input
-                    type="email"
-                    id="email"
-                    formControlName="email"
-                    placeholder="Enter your email"
-                    [class.is-invalid]="email?.invalid && (email?.dirty || email?.touched)"
-                  >
-                </div>
-                <div class="error-message" *ngIf="email?.invalid && (email?.dirty || email?.touched)">
-                  <span *ngIf="email?.errors?.['required']">Email is required</span>
-                  <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
-                </div>
-              </div>
-      
-              <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
-                  <input
-                    type="password"
-                    id="password"
-                    formControlName="password"
-                    placeholder="Enter your password"
-                    [class.is-invalid]="password?.invalid && (password?.dirty || password?.touched)"
-                  >
-                </div>
-                <div class="error-message" *ngIf="password?.invalid && (password?.dirty || password?.touched)">
-                  <span *ngIf="password?.errors?.['required']">Password is required</span>
-                  <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
-                </div>
-              </div>
-      
-              <div class="form-group remember-me">
-                <label class="checkbox-label">
-                  <input type="checkbox" formControlName="rememberMe">
-                  <span>Remember me</span>
-                </label>
-              </div>
-      
-              <button type="submit" [disabled]="loginForm.invalid || isLoading">
-                <span>{{ isLoading ? 'Logging in...' : 'Log In' }}</span>
-              </button>
-      
-              <div class="links">
-                <a href="/forgot-password">Forgot Password?</a>
-                <a href="/register">Create Account</a>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
 
-    
+<body>
+  <form class="login-form">
+    <h1>Welcome</h1>
+    <input type="email" placeholder="Email Address">
+    <input type="password" placeholder="Password">
+    <a href="#" class="forgot-password">Forgot Password</a>
+    <button class="login-button">Login</button>
+    <div class="signup-link">
+        Don't have an account? <a href="#">SignUp</a>
+    </div>
+  </form>
 </body>
 </html>
-
