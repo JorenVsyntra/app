@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link rel="stylesheet" href="/Users/jorenvandervelden/Downloads/frontend_eindproef/app/abbajo/src/app/components/loginpage/loginpage.component.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../loginpage/loginpage.component.css">
 </head>
-
-<body>
-  <form class="login-form">
-    <h1>Welcome</h1>
-    <input type="email" placeholder="Email Address">
-    <input type="password" placeholder="Password">
-    <a href="#" class="forgot-password">Forgot Password</a>
-    <button class="login-button">Login</button>
-    <div class="signup-link">
-        Don't have an account? <a href="#">SignUp</a>
+<body class="bg-gray-50">
+  <div class="max-w-2xl mx-auto my-8 px-8 sm:px-12 py-8 bg-white rounded-lg shadow-md">
+    <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Login</h2>
+    
+    <div class="mb-6">
+      <label for="email" class="block mb-2 text-gray-600 font-medium">Email <span class="text-red-500">*</span></label>
+      <input type="email" id="email" required placeholder="john.doe@example.com" 
+        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
-  </form>
+
+    <div class="mb-6">
+      <label for="password" class="block mb-2 text-gray-600 font-medium">Password <span class="text-red-500">*</span></label>
+      <input type="password" id="password" required placeholder="Password"
+        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+
+    <div class="mb-2 text-right">
+      <a href="#" class="text-green-500 hover:text-green-600 text-sm">Forgot Password?</a>
+    </div>
+
+    <div class="mb-6">
+      <button type="submit"
+        class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed">
+        Login
+      </button>
+    </div>
+
+    <div class="text-center">
+      <p>Don't have an account? 
+        <a href="../registerform/registerform.component.html" class="text-green-500 hover:text-green-600">Register</a>
+      </p>
+    </div>
+  </div>
 </body>
 </html>
