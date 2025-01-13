@@ -1,50 +1,24 @@
-// profile.component.ts
-import { Component, OnInit } from '@angular/core';
-
-interface ProfileData {
-  username: string;
-  email: string;
-  address: string;
-  nickname: string;
-  dob: string;
-  profilePicture: string;
-}
+// src/app/profile/profile-page.component.ts
+import { Component, OnInit, signal } from '@angular/core';
+import { CountryService } from '../../shared/fetchcountries.service';  // Import your service
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-profile-page',
+  standalone: true,
+  templateUrl: './profile-page.component.html',
+  styleUrls: ['./profile-page.component.css'],
 })
-export class ProfileComponent implements OnInit {
-  profileData: ProfileData = {
-    username: 'Jenny Wilson',
-    email: 'jenny@gmail.com',
-    address: 'New York, USA',
-    nickname: 'Sky Angel',
-    dob: 'April 28, 1981',
-    profilePicture: 'assets/default-profile.jpg'
-  };
+export class ProfilePageComponent implements OnInit {
+  // Signal for selected country
+  selectedCountry: number | null = null;
 
-  editField: string | null = null;
+  // Reactive signal for countries from the service
+  countries = this.countryService.countries;
 
-  onEdit(field: string) {
-    this.editField = field;
-  }
+  constructor(private countryService: CountryService) {}
 
-  onSave() {
-    this.editField = null;
-    // Add your save logic here
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // Convert to base64 or handle file upload
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.profileData.profilePicture = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+  ngOnInit(): void {
+    // You can log or perform any actions when countries are loaded
+    console.log('Countries loaded:', this.countries());
   }
 }
