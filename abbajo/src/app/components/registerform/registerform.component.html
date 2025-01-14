@@ -6,6 +6,42 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../registerform/registerform.component.css">
 </head>
+
+<script>
+// everything for the working of the car form
+document.addEventListener('DOMContentLoaded', function() {
+  const carYesCheckbox = document.getElementById('carYes');
+  const carNoCheckbox = document.getElementById('carNo');
+  const carModelSection = document.getElementById('carModelSection'); // Section for the car model.
+
+
+  carModelSection.style.display = 'none'; // Initially hide the car model section.
+
+  carYesCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      carNoCheckbox.checked = false;
+      carNoCheckbox.disabled = true;
+      carModelSection.style.display = 'block'; // Show the car model section.
+
+    } else {
+      carNoCheckbox.disabled = false;
+      carModelSection.style.display = 'none'; // Hide the car model section.
+
+    }
+  });
+
+  carNoCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      carYesCheckbox.checked = false;
+      carYesCheckbox.disabled = true;
+      carModelSection.style.display = 'none'; // Hide the car model section.
+    } else {
+      carYesCheckbox.disabled = false;
+    }
+  });
+});
+</script>
+
 <body class="bg-gray-50">
   <div class="max-w-2xl mx-auto my-8 px-8 sm:px-12 py-8 bg-white rounded-lg shadow-md">
     <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Register yourself now!</h2>
@@ -35,15 +71,29 @@
     </div>
 
     <div class="mb-6">
-      <label for="zipCode" class="block mb-2 text-gray-600 font-medium">Zip Code <span class="text-red-500">*</span></label>
-      <input type="text" id="zipCode" formControlName="zipCode" required placeholder="12345"
-        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-    </div>
-    
-    <div class="mb-6">
       <label for="country" class="block mb-2 text-gray-600 font-medium">Country <span class="text-red-500">*</span></label>
       <input type="text" id="country" formControlName="country" required placeholder="USA"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+
+    <div class="mb-6">
+      <label for="car" class="block mb-2 text-gray-600 font-medium">Do you have a car? <span class="text-red-500">*</span></label>
+      <div class="flex items-center">
+        <label for="carYes" class="block text-gray-600 font-medium mr-2">Yes</label>
+        <input type="checkbox" id="carYes" formControlName="carYes" required class="mr-4">
+        <label for="carNo" class="block text-gray-600 font-medium mr-2">No</label>
+        <input type="checkbox" id="carNo" formControlName="carNo" required>
+      </div>
+    </div>
+    
+    <div id="carModelSection" class="mb-6">
+      <label for="carModel" class="block mb-2 text-gray-600 font-medium">Car Model <span class="text-red-500">*</span></label>
+      <div class="flex gap-4">
+        <input type="text" id="carModel" formControlName="carModel" required placeholder="Audi"
+          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        <input type="text" id="carModel" formControlName="carModel" required placeholder="A6"
+          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+      </div>
     </div>
 
     <div class="mb-6">
