@@ -5,7 +5,7 @@ import { RegisterComponent } from '../app/components/registerform/registerform.c
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
