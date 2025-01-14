@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-
-
-
-=======
-//import { RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RegisterComponent } from '../app/components/registerform/registerform.component';
 
