@@ -25,10 +25,10 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Initialize any additional setup here
+
   }
 
-  // Getter methods for easy access in template
+
   get email() {
     return this.loginForm.get('email');
   }
@@ -42,8 +42,7 @@ export class LoginPageComponent implements OnInit {
       try {
         this.isLoading = true;
         
-        // Add your authentication logic here
-        // Example:
+
     const result = await this.authService.login(this.loginForm.value);
         console.log('Login result:', result);
         
@@ -52,14 +51,12 @@ export class LoginPageComponent implements OnInit {
         this.loginForm.markAsUntouched();
         this.loginForm.markAsPristine()
         
-        // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // On successful login
+
         this.router.navigate(['/dashboard']);
       } catch (error) {
         console.error('Login failed:', error);
-        // Handle error (show message to user, etc.)
       } finally {
         this.isLoading = false;
       }

@@ -1,1 +1,86 @@
-<p>profilepage works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../profilepage/profilepage.component.css">
+</head>
+<body class="bg-gray-200">
+
+    <div class="max-w-3xl mx-auto my-8 px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
+        <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Manage Your Profile Information</h2>
+        <h1 class="text-center text-xl font-bold text-gray-800 mb-6">Edit Account</h1>
+
+        <!-- Name Section -->
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Username</label>
+            <input type="text" value="demo" disabled class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">First Name</label>
+                <input type="text" placeholder="First Name" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Last Name</label>
+                <input type="text" placeholder="Last Name" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Contact Info</h3>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">E-mail</label>
+            <input type="email" placeholder="E-mail" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Phone</label>
+            <input type="tel" placeholder="(+##) # ## ## ## ##" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Address</label>
+            <input type="text" placeholder="Address" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <div class="relative inline-block w-64">
+            <label for="dropdown" class="block text-sm font-medium text-gray-700 mb-2">Select a country</label>
+            <select
+            id="country"
+            [(ngModel)]="selectedCountry"
+            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+            @for (let country of countries(); track $index) {
+            <option [value]="country.id">
+                {{ country.name }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- About Yourself -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4">About Yourself</h3>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Biographical Info</label>
+            <textarea rows="4" placeholder="Tell us about yourself" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Password</label>
+                <input type="password" placeholder="Password" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Repeat Password</label>
+                <input type="password" placeholder="Repeat Password" class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200">
+            Update
+        </button>
+    </div>
+
+</body>
+</html>
