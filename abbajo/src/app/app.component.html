@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
   <nav class="bg-gray-800">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
@@ -85,8 +84,6 @@
   </nav>
   
 
-
-
   <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
     <h1 class="text-2xl font-bold mb-2 text-gray-800">Search Routes</h1>
     <p class="text-sm text-gray-500 mb-4">subtext</p>
@@ -104,7 +101,9 @@
     <div>
       <h2 class="text-xl font-semibold mb-2">Results</h2>
       <ul class="list-disc pl-5 space-y-1">
-        <li *ngFor="let post of filteredPosts">{{ post }}</li>
+        @for (post of filteredPosts; track post) {
+          <li>{{ post }}</li>
+        }
       </ul>
     </div>
   
@@ -112,3 +111,5 @@
   
 </body>
 </html>
+ 
+ 
