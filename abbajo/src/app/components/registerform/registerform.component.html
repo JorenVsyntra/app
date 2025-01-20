@@ -72,16 +72,14 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 
     <div class="mb-6">
-      <label for="city" class="block mb-2 text-gray-600 font-medium">City <span class="text-red-500">*</span></label>
-      <input type="text" id="city" formControlName="city" required placeholder="New York"
-        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-    </div>
-
-    <div class="mb-6">
-      <label for="country" class="block mb-2 text-gray-600 font-medium">Country <span class="text-red-500">*</span></label>
-      <input type="text" id="country" formControlName="country" required placeholder="USA"
-        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-    </div>
+      <label for="cities" class="block mb-2 text-gray-600 font-medium">Choose a city: <span class="text-red-500">*</span></label>
+    <select id="cities" name="cities">
+      @for (city in cities) {
+        <option value="{{ city }}">City</option>        
+      }
+    
+      </select>
+</div>
 
     <div class="mb-6">
       <label for="car" class="block mb-2 text-gray-600 font-medium">Do you have a car? <span class="text-red-500">*</span></label>
@@ -94,13 +92,12 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     
     <div id="carModelSection" class="mb-6">
-      <label for="carModel" class="block mb-2 text-gray-600 font-medium">Car Model <span class="text-red-500">*</span></label>
-      <div class="flex gap-4">
-        <input type="text" id="carModel" formControlName="carModel" required placeholder="Audi"
-          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-        <input type="text" id="carModel" formControlName="carModel" required placeholder="A6"
-          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-      </div>
+      <label for="carModelSection" class="block mb-2 text-gray-600 font-medium">Select your carmodel: <span class="text-red-500">*</span></label>
+      <select id:"carModel" name="carModel">
+        @for (carModel in carModels) {
+          <option value="{{ carModel }}">Car models</option>
+        }
+      </select>
     </div>
 
     <div class="mb-6">
