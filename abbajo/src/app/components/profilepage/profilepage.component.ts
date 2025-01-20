@@ -1,12 +1,12 @@
 // src/app/profile/profile-page.component.ts
 import { Component, OnInit, signal } from '@angular/core';
-import { CountryService } from '../../shared/fetchcountries.service';  // Import your service
+import { CountryService } from '../../shared/countries.service';  // Import your service
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.css'],
+  templateUrl: './profilepage.component.html',
+  styleUrls: ['./profilepage.component.css'],
 })
 export class ProfilePageComponent implements OnInit {
   // Signal for selected country
