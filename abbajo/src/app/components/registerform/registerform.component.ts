@@ -140,4 +140,48 @@ export class RegisterComponent {
   deleteUser(id: number) {
     this.userService.deleteUser(id);
   }
+  async fetchCities() {
+    try {
+      const response = await fetch('http://localhost:8000/api/cities');
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+    }
+  }
+  async fetchCar() {
+    try {
+      const response = await fetch('http://localhost:8000/api/cars');
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching cars:', error);
+    }
+    }
+  async fetchUsers() {
+    try {
+      const response = await fetch('http://localhost:8000/api/users');
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+    }
+// post user
+async postUser() {
+  try {
+    const response = await fetch('http://localhost:8000/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: 'John Doe' })
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Error posting user:', error);
+  }
+
+}
 }
