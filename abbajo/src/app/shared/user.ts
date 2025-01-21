@@ -9,4 +9,5 @@ title: any;
     country: string;
     phone: string;
     email: string;
+    dob: string;
   }
