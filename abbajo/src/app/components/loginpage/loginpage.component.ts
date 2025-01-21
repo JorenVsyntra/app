@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './loginpage.component.html',
-  styleUrls: ['./loginpage.component.css']
+  styleUrls: ['./loginpage.component.css'],
+  imports: [RouterOutlet, RouterLink,  ]
 })
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
