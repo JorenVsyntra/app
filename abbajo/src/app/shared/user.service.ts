@@ -1,4 +1,4 @@
-import { Injectable, signal, OnInit } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { User } from '../shared/user';
 
 @Injectable({
@@ -12,65 +12,54 @@ export class UserService {
   constructor() {}
 
   async loadUsers() {
-    const response = await fetch(this.usersUrl);
-    const users = await response.json();
-    if (users) {
-      this.users.set(users);
+    try {
+      const response = await fetch(this.usersUrl);
+      if (!response.ok) throw new Error('Failed to load users');
+      const data = await response.json();
+      this.users.set(data.users); // Note: accessing 'users' from response
+    } catch (error) {
+      console.error('Error loading users:', error);
+      throw error;
     }
-    console.log(this.users());
   }
 
-  // load user
   async loadUser(id: number) {
-    const response = await fetch(`${this.usersUrl}/${id}`);
-    const user = await response.json();
-    if (user) {
-      this.selectedUser.set(user);
-    }
-    console.log(this.selectedUser());
-  }
-
-  async addUser(title: string) {
-    const newUser = {
-      title,
-      completed: false
-    };
-
-    const response = await fetch(this.usersUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newUser)
-    });
-    const user = await response.json();
-    if (user) {
-      this.users.update(users => [...users, user]);
+    try {
+      const response = await fetch(`${this.usersUrl}/${id}`);
+      if (!response.ok) throw new Error('Failed to load user');
+      const data = await response.json();
+      this.selectedUser.set(data.user); // Note: accessing 'user' from response
+    } catch (error) {
+      console.error('Error loading user:', error);
+      throw error;
     }
   }
 
-  // update user
   async updateUser(user: User) {
-    const response = await fetch(`${this.usersUrl}/${user.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(user)
-    });
-    const updatedUser = await response.json();
-    if (updatedUser) {
+    try {
+      const response = await fetch(`${this.usersUrl}/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+      
+      if (!response.ok) throw new Error('Failed to update user');
+      
+      const data = await response.json();
+      const updatedUser = data.user;
+      
+      this.selectedUser.set(updatedUser);
       this.users.update(users =>
         users.map(u => (u.id === updatedUser.id ? updatedUser : u))
       );
+      
+      return updatedUser;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw error;
     }
-  }
-
-  // delete user
-  async deleteUser(id: number) {
-    await fetch(`${this.usersUrl}/${id}`, {
-      method: 'DELETE'
-    });
-    this.users.update(users => users.filter(u => u.id !== id));
   }
 }

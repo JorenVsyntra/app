@@ -1,13 +1,23 @@
 export interface User {
-title: any;
-    completed: any;
+  id: number;
+  firstname: string;  
+  lastname: string;   
+  email: string;
+  phone: string;
+  dob: string;
+  bio: string | null | undefined;
+  location: {
     id: number;
-    firstName: string;
-    lastName: string;
-    streetAddress: string;
-    city: string;
-    country: string;
-    phone: string;
-    email: string;
-    dob: string;
-  }
+    address: string;
+    city_id: number;
+    city?: {
+      id: number;
+      name: string;
+      country_id: number;
+      country?: {
+        id: number;
+        name: string;
+      };
+    };
+  };
+}
