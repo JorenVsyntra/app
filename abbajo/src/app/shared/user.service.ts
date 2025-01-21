@@ -1,21 +1,33 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, OnInit } from '@angular/core';
 import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000/api/users';
+  private usersUrl = 'http://localhost:8000/api/users';
+  selectedUser = signal<User | null>(null); 
   users = signal<User[]>([]);
 
   constructor() {}
 
   async loadUsers() {
-    const response = await fetch(this.apiUrl);
+    const response = await fetch(this.usersUrl);
     const users = await response.json();
     if (users) {
       this.users.set(users);
     }
+    console.log(this.users());
+  }
+
+  // load user
+  async loadUser(id: number) {
+    const response = await fetch(`${this.usersUrl}/${id}`);
+    const user = await response.json();
+    if (user) {
+      this.selectedUser.set(user);
+    }
+    console.log(this.selectedUser());
   }
 
   async addUser(title: string) {
@@ -24,7 +36,7 @@ export class UserService {
       completed: false
     };
 
-    const response = await fetch(this.apiUrl, {
+    const response = await fetch(this.usersUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -37,26 +49,26 @@ export class UserService {
     }
   }
 
-  async toggleUser(user: User) {
-    const updatedUser = { ...user, completed: !user.completed };
-    
-    const response = await fetch(`${this.apiUrl}/${user.id}`, {
+  // update user
+  async updateUser(user: User) {
+    const response = await fetch(`${this.usersUrl}/${user.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updatedUser)
+      body: JSON.stringify(user)
     });
-    const result = await response.json();
-    if (result) {
+    const updatedUser = await response.json();
+    if (updatedUser) {
       this.users.update(users =>
-        users.map(u => u.id === user.id ? updatedUser : u)
+        users.map(u => (u.id === updatedUser.id ? updatedUser : u))
       );
     }
   }
 
+  // delete user
   async deleteUser(id: number) {
-    await fetch(`${this.apiUrl}/${id}`, {
+    await fetch(`${this.usersUrl}/${id}`, {
       method: 'DELETE'
     });
     this.users.update(users => users.filter(u => u.id !== id));

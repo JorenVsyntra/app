@@ -1,6 +1,6 @@
-// src/app/profile/profile-page.component.ts
-import { Component, OnInit, signal } from '@angular/core';
-import { CountryService } from '../../shared/countries.service';  // Import your service
+import { Component, OnInit, Signal, inject } from '@angular/core';
+import { UserService } from '../../shared/user.service';
+import { User } from '../../shared/user';
 
 @Component({
   selector: 'app-profile-page',
@@ -9,16 +9,25 @@ import { CountryService } from '../../shared/countries.service';  // Import your
   styleUrls: ['./profilepage.component.css'],
 })
 export class ProfilePageComponent implements OnInit {
-  // Signal for selected country
-  selectedCountry: number | null = null;
+  private userService = inject(UserService);
+  users: Signal<User[]> = this.userService.users;
+  selectedUser: Signal<User | null> = this.userService.selectedUser;
 
-  // Reactive signal for countries from the service
-  countries = this.countryService.countries;
+  constructor() {}
+  
+  ngOnInit() {
+    // Load users first
+    this.loadUsers();
+    // Then load specific user
+    this.loadUser(1);
+    console.log("hallo");
+  }
 
-  constructor(private countryService: CountryService) {}
+  loadUsers() {
+    this.userService.loadUsers();
+  }
 
-  ngOnInit(): void {
-    // You can log or perform any actions when countries are loaded
-    console.log('Countries loaded:', this.countries());
+  loadUser(id: number) {
+    this.userService.loadUser(id);
   }
 }
