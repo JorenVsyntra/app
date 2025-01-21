@@ -19,6 +19,7 @@ export class CityService {
       if (cities) {
         this.cities.set(cities);
       }
+      console.log(this.cities())
     }
  
     // add city

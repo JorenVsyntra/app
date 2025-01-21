@@ -1,9 +1,9 @@
 // registration.component.ts
-import { Component, Inject, TrackByFunction } from '@angular/core';
+import { Component, Inject, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CityService } from '../../shared/city.service';
-
+import { city } from '../../shared/city';
 
 @Component({
   selector: 'app-registration',
@@ -12,9 +12,10 @@ import { CityService } from '../../shared/city.service';
   templateUrl: './registerform.component.html',
   styleUrls: ['./registerform.component.css']
 })
-export class RegistrationComponent {
-  
-  constructor(private cityService: CityService) {}
+export class RegistrationComponent implements OnInit {
+  private cityService = Inject(CityService);
+  cities: Signal<city[]> = this.cityService.cities;
+  constructor() {}
 
   registrationData = {
     firstName: '',
@@ -29,7 +30,6 @@ export class RegistrationComponent {
     password: '',
     confirmPassword: ''
   };
-cities: any;
 carModels: any;
 
   fetchCities() {
@@ -56,9 +56,9 @@ carModels: any;
   }
 
   ngOnInit() {
-    console.log('Registration component initialized');
+    this.loadCities();
+  }
+  loadCities() {
     this.cityService.loadCities();
-    this.cities = this.cityService.cities;
-    console.log(this.cityService.loadCities());
   }
 }
