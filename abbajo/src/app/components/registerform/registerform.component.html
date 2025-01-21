@@ -4,138 +4,123 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../registerform/registerform.component.css">
 </head>
+<body>
 
-<script>
-// everything for the working of the car form
-document.addEventListener('DOMContentLoaded', function() {
-  const carYesCheckbox = document.getElementById('carYes');
-  const carNoCheckbox = document.getElementById('carNo');
-  const carModelSection = document.getElementById('carModelSection'); // Section for the car model.
-
-
-  carModelSection.style.display = 'none'; // Initially hide the car model section.
-
-  carYesCheckbox.addEventListener('change', function() {
-    if (this.checked) {
-      carNoCheckbox.checked = false;
-      carNoCheckbox.disabled = true;
-      carModelSection.style.display = 'block'; // Show the car model section.
-
-    } else {
-      carNoCheckbox.disabled = false;
-      carModelSection.style.display = 'none'; // Hide the car model section.
-
-    }
-  });
-
-  carNoCheckbox.addEventListener('change', function() {
-    if (this.checked) {
-      carYesCheckbox.checked = false;
-      carYesCheckbox.disabled = true;
-      carModelSection.style.display = 'none'; // Hide the car model section.
-    } else {
-      carYesCheckbox.disabled = false;
-    }
-  });
-});
-</script>
-
-<body class="bg-gray-50">
-  <div class="max-w-2xl mx-auto my-8 px-8 sm:px-12 py-8 bg-white rounded-lg shadow-md">
-    <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Register yourself now!</h2>
-    
+<!-- registration.component.html -->
+<div class="max-w-2xl mx-auto my-8 px-8 sm:px-12 py-8 bg-white rounded-lg shadow-md">
+  <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Register yourself now!</h2>
+  
+  <form (ngSubmit)="onSubmit()">
     <div class="mb-6">
       <label for="firstName" class="block mb-2 text-gray-600 font-medium">First Name <span class="text-red-500">*</span></label>
-      <input type="text" id="firstName" formControlName="firstName" required placeholder="John" 
+      <input type="text" id="firstName" [(ngModel)]="registrationData.firstName" name="firstName" required placeholder="John" 
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="lastName" class="block mb-2 text-gray-600 font-medium">Last Name <span class="text-red-500">*</span></label>
-      <input type="text" id="lastName" formControlName="lastName" required placeholder="Doe"
+      <input type="text" id="lastName" [(ngModel)]="registrationData.lastName" name="lastName" required placeholder="Doe"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
-    <label for="dateOfBirth" class="block mb-2 text-gray-600 font-medium">Date of Birth <span class="text-red-500">*</span></label>
-    <input type="date" id="dateOfBirth" formControlName="dateOfBirth" required placeholder="dd-mm-yyyy"
+      <label for="dateOfBirth" class="block mb-2 text-gray-600 font-medium">Date of Birth <span class="text-red-500">*</span></label>
+      <input type="date" id="dateOfBirth" [(ngModel)]="registrationData.dateOfBirth" name="dateOfBirth" required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
-    
 
     <div class="mb-6">
       <label for="streetAddress" class="block mb-2 text-gray-600 font-medium">Street Address <span class="text-red-500">*</span></label>
-      <input type="text" id="streetAddress" formControlName="streetAddress" required placeholder="123 Main St"
+      <input type="text" id="streetAddress" [(ngModel)]="registrationData.streetAddress" name="streetAddress" required placeholder="123 Main St"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+    <!-- {{cities() | json}} -->
+    <div class="mb-6">
+      <label for="cities" class="block mb-2 text-gray-600 font-medium">
+        Choose a city: <span class="text-red-500">*</span>
+      </label>
+      <select
+        id="cities"
+        [(ngModel)]="registrationData.selectedCity"
+        name="selectedCity"
+        required
+        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+      >
+        <option value="">Select a city</option>
+        <option *ngFor="let city of cities()" [value]="city.id">
+          {{ city.name }}
+        </option>
+      </select>
     </div>
 
     <div class="mb-6">
-      <label for="cities" class="block mb-2 text-gray-600 font-medium">Choose a city: <span class="text-red-500">*</span></label>
-    <select id="cities" name="cities">
-      @for (city in cities) {
-        <option value="{{ city }}">City</option>        
-      }
-    
-      </select>
-</div>
-
-    <div class="mb-6">
-      <label for="car" class="block mb-2 text-gray-600 font-medium">Do you have a car? <span class="text-red-500">*</span></label>
+      <label class="block mb-2 text-gray-600 font-medium">Do you have a car? <span class="text-red-500">*</span></label>
       <div class="flex items-center">
-        <label for="carYes" class="block text-gray-600 font-medium mr-2">Yes</label>
-        <input type="checkbox" id="carYes" formControlName="carYes" required class="mr-4">
-        <label for="carNo" class="block text-gray-600 font-medium mr-2">No</label>
-        <input type="checkbox" id="carNo" formControlName="carNo" required>
+        <label class="inline-flex items-center mr-4">
+          <input type="radio" [value]="true" [(ngModel)]="registrationData.hasCar" name="hasCar" 
+            (change)="onCarOptionChange(true)" class="mr-2">
+          <span>Yes</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" [value]="false" [(ngModel)]="registrationData.hasCar" name="hasCar"
+            (change)="onCarOptionChange(false)" class="mr-2">
+          <span>No</span>
+        </label>
       </div>
     </div>
     
-    <div id="carModelSection" class="mb-6">
-      <label for="carModelSection" class="block mb-2 text-gray-600 font-medium">Select your carmodel: <span class="text-red-500">*</span></label>
-      <select id:"carModel" name="carModel">
-        @for (carModel in carModels) {
-          <option value="{{ carModel }}">Car models</option>
-        }
-      </select>
-    </div>
+    @if (showCarModelSection) {
+      <div class="mb-6">
+        <label for="carModel" class="block mb-2 text-gray-600 font-medium">Select your car model: <span class="text-red-500">*</span></label>
+        <select id="carModel" [(ngModel)]="registrationData.carModel" name="carModel" required
+          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option value="">Select a car model</option>
+          @for (model of carModels; track model) {
+            <option [value]="model">{{ model }}</option>
+          }
+        </select>
+      </div>
+    }
 
     <div class="mb-6">
       <label for="phone" class="block mb-2 text-gray-600 font-medium">Phone <span class="text-red-500">*</span></label>
-      <input type="tel" id="phone" formControlName="phone" required placeholder="+1234567890"
+      <input type="tel" id="phone" [(ngModel)]="registrationData.phone" name="phone" required placeholder="+1234567890"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="email" class="block mb-2 text-gray-600 font-medium">Email <span class="text-red-500">*</span></label>
-      <input type="email" id="email" formControlName="email" required placeholder="john.doe@example.com"
+      <input type="email" id="email" [(ngModel)]="registrationData.email" name="email" required placeholder="john.doe@example.com"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="password" class="block mb-2 text-gray-600 font-medium">Password <span class="text-red-500">*</span></label>
-      <input type="password" id="password" formControlName="password" required placeholder="Password"
+      <input type="password" id="password" [(ngModel)]="registrationData.password" name="password" required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="confirmPassword" class="block mb-2 text-gray-600 font-medium">Confirm Password <span class="text-red-500">*</span></label>
-      <input type="password" id="confirmPassword" formControlName="confirmPassword" required placeholder="Password"
+      <input type="password" id="confirmPassword" [(ngModel)]="registrationData.confirmPassword" name="confirmPassword" required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
-      <button type="submit" [disabled]="!registrationForm.valid"
-        class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed">
-        Register
+      <button type="submit" class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed">
+        <a routerLink="login" class="w-full h-full block"> Login</a>
       </button>
     </div>
 
+
+
     <div class="text-center">
       <p>Already have an account? 
-        <a href="../loginpage/loginpage.component.html" class="text-green-500 hover:text-green-600 ">Login</a>
+        <a routerLink="login" class="text-green-500 hover:text-green-600">Login</a>
       </p>
     </div>
-  </div>
+  </form>
+</div>
 </body>
 </html>

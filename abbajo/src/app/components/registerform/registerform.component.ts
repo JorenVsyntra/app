@@ -1,140 +1,64 @@
-
-import { Component, effect, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+// registration.component.ts
+import { Component, Inject, OnInit, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../shared/user.service';
-import { User } from '../../shared/user';
+import { CommonModule } from '@angular/common';
+import { CityService } from '../../shared/city.service';
+import { city } from '../../shared/city';
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-registration',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  template: `
-    <div class="user-container">
-      <h2>User List</h2>
-      <div class="add-user">
-        <input 
-          #userInput 
-          type="text" 
-          placeholder="Add new user" 
-          (keyup.enter)="addUser(userInput.value); userInput.value = ''"
-        >
-        <button (click)="addUser(userInput.value); userInput.value = ''">Add</button>
-      </div>
-
-      @if (users().length === 0) {
-        <p>No users yet! Add one above.</p>
-      }
-
-      <ul class="user-list">
-        @for (user of users(); track user.id) {
-          <li class="user-item">
-            <input 
-              type="checkbox" 
-              [checked]="user.completed" 
-              (change)="toggleUser(user)"
-            >
-            <span [class.completed]="user.completed">{{ user.title }}</span>
-            <button (click)="deleteUser(user.id)">Delete</button>
-          </li>
-        }
-      </ul>
-    </div>
-  `,
-  styles: [`
-    .user-container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 20px;
-    }
-    .add-user {
-      margin-bottom: 20px;
-    }
-    .user-list {
-      list-style: none;
-      padding: 0;
-    }
-    .user-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-    }
-    .completed {
-      text-decoration: line-through;
-      color: #888;
-    }
-  `]
+  templateUrl: './registerform.component.html',
+  styleUrls: ['./registerform.component.css']
 })
-export class RegisterComponent {
-  private userService = inject(UserService);
-  users = this.userService.users;
+export class RegistrationComponent implements OnInit {
+  private cityService = Inject(CityService);
+  cities: Signal<city[]> = this.cityService.cities;
+  constructor() {}
 
-  constructor() {
-    this.userService.loadUsers();
+  registrationData = {
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    streetAddress: '',
+    selectedCity: '',
+    hasCar: null as boolean | null,
+    carModel: '',
+    phone: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  };
+carModels: any;
 
-    // Example of using effect
-    effect(() => {
-      console.log('Users updated:', this.users());
-    });
+  fetchCities() {
+    
   }
+  fetchcarModels() {
+    
+  }
+  
+  
+  showCarModelSection = false;
 
-  addUser(title: string) {
-    if (title.trim()) {
-      this.userService.addUser(title);
+  onCarOptionChange(hasCar: boolean) {
+    this.registrationData.hasCar = hasCar;
+    this.showCarModelSection = hasCar;
+    if (!hasCar) {
+      this.registrationData.carModel = '';
     }
   }
 
-  toggleUser(user: User) {
-    this.userService.toggleUser(user);
+  onSubmit() {
+    console.log('Form submitted:', this.registrationData);
+    // Add your form submission logic here
   }
 
-  deleteUser(id: number) {
-    this.userService.deleteUser(id);
+  ngOnInit() {
+    this.loadCities();
   }
-  async fetchCities() {
-    try {
-      const response = await fetch('http://localhost:8000/api/cities');
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error fetching cities:', error);
-    }
+  loadCities() {
+    this.cityService.loadCities();
   }
-  async fetchCar() {
-    try {
-      const response = await fetch('http://localhost:8000/api/cars');
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error fetching cars:', error);
-    }
-    }
-  async fetchUsers() {
-    try {
-      const response = await fetch('http://localhost:8000/api/users');
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-    }
-// post user
-async postUser() {
-  try {
-    const response = await fetch('http://localhost:8000/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: 'John Doe' })
-    });
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error('Error posting user:', error);
-  }
-
-}
 }
