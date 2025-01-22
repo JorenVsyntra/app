@@ -3,19 +3,22 @@ import { UserService } from '../../shared/user.service';
 import { User } from '../../shared/user';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { CityService } from '../../shared/city.service';
+import { city } from '../../shared/city';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './profilepage.component.html',
   styleUrls: ['./profilepage.component.css'],
   })
 export class ProfilepageComponent implements OnInit {
   private userService = inject(UserService);
+  private cityService = inject(CityService);
   users: Signal<User[]> = this.userService.users;
   selectedUser: Signal<User | null> = this.userService.selectedUser;
+  cities: Signal<city[]> = this.cityService.cities;
 
   profileForm = new FormGroup({
     firstname: new FormControl(''),
@@ -27,23 +30,25 @@ export class ProfilepageComponent implements OnInit {
     dob: new FormControl(''),
     type: new FormControl(''),
     carseats: new FormControl<number | null>(null),
-    city: new FormControl(''),
+    city_id: new FormControl<number | null>(null),
   });
 
   constructor() {
     effect(() => {
       const user = this.selectedUser();
       if (user) {
+        console.log('Current user:', user);
         this.profileForm.patchValue({
           firstname: user.firstname,
           lastname: user.lastname,
           email: user.email,
           phone: user.phone,
-          address: user.location.address,
+          address: user.location?.address,
           bio: user.bio,
           dob: user.dob,
-          type: user.car.type,
-          carseats: user.car.carseats
+          type: user.car?.type,        
+          carseats: user.car?.carseats, 
+          city_id: user.location?.city_id 
         }, { emitEvent: false });
       }
     });
@@ -52,6 +57,7 @@ export class ProfilepageComponent implements OnInit {
   ngOnInit() {
     this.loadUsers();
     this.loadUser(1);
+    this.loadCities();
   }
 
   loadUsers() {
@@ -62,8 +68,15 @@ export class ProfilepageComponent implements OnInit {
     this.userService.loadUser(id);
   }
 
+  loadCities() {
+    this.cityService.loadCities().then(() => {
+      console.log('Cities loaded:', this.cities());
+    });
+  }
+
   async onSubmit() {
     if (this.profileForm.valid) {
+      console.log('Form values:', this.profileForm.value); 
       const currentUser = this.selectedUser();
       if (currentUser) {
         const updatedUser: User = {
@@ -76,6 +89,7 @@ export class ProfilepageComponent implements OnInit {
           location: {
             ...currentUser.location,
             address: this.profileForm.value.address!,
+            city_id: this.profileForm.value.city_id!,
           },
           bio: this.profileForm.value.bio,
           dob: this.profileForm.value.dob!,
@@ -85,8 +99,13 @@ export class ProfilepageComponent implements OnInit {
             carseats: this.profileForm.value.carseats
           }
         };
-        
-        await this.userService.updateUser(updatedUser);
+        console.log('Sending update:', updatedUser);
+        try {
+          await this.userService.updateUser(updatedUser);
+          console.log('Update successful');
+        } catch (error) {
+          console.error('Update failed:', error);
+        }
       }
     }
   }

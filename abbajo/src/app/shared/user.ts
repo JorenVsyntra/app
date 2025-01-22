@@ -7,6 +7,7 @@ export interface User {
   dob: string;
   bio: string | null | undefined;
   car: {
+    id: number;
     type: string | null | undefined;
     carseats: number | null | undefined
   };
