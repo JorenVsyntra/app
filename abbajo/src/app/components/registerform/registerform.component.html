@@ -14,43 +14,44 @@
   <form (ngSubmit)="onSubmit()">
     <div class="mb-6">
       <label for="firstName" class="block mb-2 text-gray-600 font-medium">First Name <span class="text-red-500">*</span></label>
-      <input type="text" id="firstName" [(ngModel)]="registrationData.firstName" name="firstName" required placeholder="John" 
+      <input type="text" id="firstName" [(ngModel)]="registerData.firstName" name="firstName" required placeholder="John" 
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="lastName" class="block mb-2 text-gray-600 font-medium">Last Name <span class="text-red-500">*</span></label>
-      <input type="text" id="lastName" [(ngModel)]="registrationData.lastName" name="lastName" required placeholder="Doe"
+      <input type="text" id="lastName" [(ngModel)]="registerData.lastName" name="lastName" required placeholder="Doe"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="dateOfBirth" class="block mb-2 text-gray-600 font-medium">Date of Birth <span class="text-red-500">*</span></label>
-      <input type="date" id="dateOfBirth" [(ngModel)]="registrationData.dateOfBirth" name="dateOfBirth" required
+      <input type="date" id="dateOfBirth" [(ngModel)]="registerData.dateOfBirth" name="dateOfBirth" required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="streetAddress" class="block mb-2 text-gray-600 font-medium">Street Address <span class="text-red-500">*</span></label>
-      <input type="text" id="streetAddress" [(ngModel)]="registrationData.streetAddress" name="streetAddress" required placeholder="123 Main St"
+      <input type="text" id="streetAddress" [(ngModel)]="registerData.streetAddress" name="streetAddress" required placeholder="123 Main St"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
-    <!-- {{cities() | json}} -->
     <div class="mb-6">
       <label for="cities" class="block mb-2 text-gray-600 font-medium">
         Choose a city: <span class="text-red-500">*</span>
       </label>
       <select
         id="cities"
-        [(ngModel)]="registrationData.selectedCity"
+        [(ngModel)]="registerData.selectedCity"
         name="selectedCity"
         required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
       >
         <option value="">Select a city</option>
-        <option *ngFor="let city of cities()" [value]="city.id">
-          {{ city.name }}
-        </option>
+        @for (city of cities(); track $index) {
+          <option [value]="city.id">
+            {{ city.name }} {{ city.country ? '- ' + city.country.name : '' }}
+          </option>
+        }
       </select>
     </div>
 
@@ -58,12 +59,12 @@
       <label class="block mb-2 text-gray-600 font-medium">Do you have a car? <span class="text-red-500">*</span></label>
       <div class="flex items-center">
         <label class="inline-flex items-center mr-4">
-          <input type="radio" [value]="true" [(ngModel)]="registrationData.hasCar" name="hasCar" 
+          <input type="radio" [value]="true" [(ngModel)]="registerData.hasCar" name="hasCar" 
             (change)="onCarOptionChange(true)" class="mr-2">
           <span>Yes</span>
         </label>
         <label class="inline-flex items-center">
-          <input type="radio" [value]="false" [(ngModel)]="registrationData.hasCar" name="hasCar"
+          <input type="radio" [value]="false" [(ngModel)]="registerData.hasCar" name="hasCar"
             (change)="onCarOptionChange(false)" class="mr-2">
           <span>No</span>
         </label>
@@ -73,7 +74,7 @@
     @if (showCarModelSection) {
       <div class="mb-6">
         <label for="carModel" class="block mb-2 text-gray-600 font-medium">Select your car model: <span class="text-red-500">*</span></label>
-        <select id="carModel" [(ngModel)]="registrationData.carModel" name="carModel" required
+        <select id="carModel" [(ngModel)]="registerData.carModel" name="carModel" required
           class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
           <option value="">Select a car model</option>
           @for (model of carModels; track model) {
@@ -85,25 +86,25 @@
 
     <div class="mb-6">
       <label for="phone" class="block mb-2 text-gray-600 font-medium">Phone <span class="text-red-500">*</span></label>
-      <input type="tel" id="phone" [(ngModel)]="registrationData.phone" name="phone" required placeholder="+1234567890"
+      <input type="tel" id="phone" [(ngModel)]="registerData.phone" name="phone" required placeholder="+1234567890"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="email" class="block mb-2 text-gray-600 font-medium">Email <span class="text-red-500">*</span></label>
-      <input type="email" id="email" [(ngModel)]="registrationData.email" name="email" required placeholder="john.doe@example.com"
+      <input type="email" id="email" [(ngModel)]="registerData.email" name="email" required placeholder="john.doe@example.com"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="password" class="block mb-2 text-gray-600 font-medium">Password <span class="text-red-500">*</span></label>
-      <input type="password" id="password" [(ngModel)]="registrationData.password" name="password" required
+      <input type="password" id="password" [(ngModel)]="registerData.password" name="password" required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 
     <div class="mb-6">
       <label for="confirmPassword" class="block mb-2 text-gray-600 font-medium">Confirm Password <span class="text-red-500">*</span></label>
-      <input type="password" id="confirmPassword" [(ngModel)]="registrationData.confirmPassword" name="confirmPassword" required
+      <input type="password" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" required
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
 

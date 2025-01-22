@@ -1,44 +1,28 @@
+// src/app/shared/city.service.ts
 import { Injectable } from '@angular/core';
 import { signal } from '@angular/core';
 import { city } from './city';
- 
+
 @Injectable({
   providedIn: 'root'
 })
 export class CityService {
- 
-  constructor() {}
- 
-    cityUrl = 'http://localhost:8000/api/cities';
-    cities = signal<city[]>([]);
- 
-    // fetch cities
-    async loadCities() {
+  private cityUrl = 'http://localhost:8000/api/cities';
+  cities = signal<city[]>([]);
+
+  async loadCities() {
+    try {
       const response = await fetch(this.cityUrl);
-      const cities = await response.json();
-      if (cities) {
-        this.cities.set(cities);
+      if (!response.ok) {
+        throw new Error('Failed to fetch cities');
       }
-      console.log(this.cities())
-    }
- 
-    // add city
-    async addCity(title: string) {
-      const newCity= {
-        title,
-        completed: false
-      };
- 
-      const response = await fetch(this.cityUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newCity)
-      });
-      const city = await response.json();
-      if (city) {
-        this.cities.update((cities: city[]) => [...cities, city]);
+      const data = await response.json();
+      if (data && data.cities) {
+        this.cities.set(data.cities);
       }
+    } catch (error) {
+      console.error('Error loading cities:', error);
+      // You might want to handle this error in the UI
     }
+  }
 }
