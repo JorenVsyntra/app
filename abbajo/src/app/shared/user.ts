@@ -6,6 +6,10 @@ export interface User {
   phone: string;
   dob: string;
   bio: string | null | undefined;
+  car: {
+    type: string | null | undefined;
+    carseats: number | null | undefined
+  };
   location: {
     id: number;
     address: string;

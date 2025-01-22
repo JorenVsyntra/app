@@ -54,6 +54,21 @@
                     formControlName="address"
                     class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
+
+            <!-- city dropdown select -->
+            <div class="mb-6">
+                <label class="block mb-2 text-gray-600 font-medium">City</label>
+                <select 
+                    formControlName="city"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="0">Select City</option>
+                    <option value="1">Lagos</option>
+                    <option value="2">Abuja</option>
+                    <option value="3">Port Harcourt</option>
+                    <option value="4">Kano</option>
+                    <option value="5">Ibadan</option>
+                </select>
+            </div>
         
             <!-- About Yourself -->
             <h3 class="text-lg font-bold text-gray-800 mb-4">About Yourself</h3>
@@ -70,6 +85,22 @@
                 <input 
                     type="date" 
                     formControlName="dob"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <!-- car -->
+            <div class="mb-6">
+                <label class="block mb-2 text-gray-600 font-medium">Car</label>
+                <input 
+                    type="text" 
+                    formControlName="type"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <!-- seats -->
+            <div class="mb-6">
+                <label class="block mb-2 text-gray-600 font-medium">Car Seats</label>
+                <input 
+                    type="number" 
+                    formControlName="carseats"
                     class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
             <!-- Submit Button -->
