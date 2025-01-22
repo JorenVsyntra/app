@@ -25,6 +25,9 @@ export class ProfilepageComponent implements OnInit {
     address: new FormControl(''),
     bio: new FormControl(''),
     dob: new FormControl(''),
+    type: new FormControl(''),
+    carseats: new FormControl<number | null>(null),
+    city: new FormControl(''),
   });
 
   constructor() {
@@ -38,7 +41,9 @@ export class ProfilepageComponent implements OnInit {
           phone: user.phone,
           address: user.location.address,
           bio: user.bio,
-          dob: user.dob
+          dob: user.dob,
+          type: user.car.type,
+          carseats: user.car.carseats
         }, { emitEvent: false });
       }
     });
@@ -73,7 +78,12 @@ export class ProfilepageComponent implements OnInit {
             address: this.profileForm.value.address!,
           },
           bio: this.profileForm.value.bio,
-          dob: this.profileForm.value.dob!
+          dob: this.profileForm.value.dob!,
+          car: {
+            ...currentUser.car,
+            type: this.profileForm.value.type,
+            carseats: this.profileForm.value.carseats
+          }
         };
         
         await this.userService.updateUser(updatedUser);
