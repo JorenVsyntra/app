@@ -83,12 +83,10 @@ carModels: any;
 
   ngOnInit() {
     this.loadCities();
-    console.log('Initial cities:', this.cities());
   }
   
   loadCities() {
     this.cityService.loadCities().then(() => {
-      console.log('Cities loaded:', this.cities());
     });
   }
 }
