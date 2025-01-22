@@ -35,28 +35,6 @@
       <input type="text" id="streetAddress" [(ngModel)]="registerData.streetAddress" name="streetAddress" required placeholder="123 Main St"
         class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
-    <!-- {{cities() | json}} -->
-    <!-- <div class="mb-6">
-      <label for="cities" class="block mb-2 text-gray-600 font-medium">
-        Choose a city: <span class="text-red-500">*</span>
-      </label>
-      <select
-        id="cities"
-        [(ngModel)]="registrationData.selectedCity"
-        name="selectedCity"
-        required
-        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-      >
-        <option value="">Select a city</option>
-        
-        @for (city of cities(); track city){
-          <option [value]="city">
-          {{ city.name }}
-        </option>
-
-        } 
-      </select>
-    </div> -->
     <div class="mb-6">
       <label for="cities" class="block mb-2 text-gray-600 font-medium">
         Choose a city: <span class="text-red-500">*</span>

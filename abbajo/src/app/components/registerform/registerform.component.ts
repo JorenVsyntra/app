@@ -1,66 +1,3 @@
-
-// import { Component, inject, OnInit } from '@angular/core';
-// import { FormsModule } from '@angular/forms';
-// import { CommonModule } from '@angular/common';
-// import { RouterLink } from '@angular/router';
-// import { CityService } from '../../shared/city.service';
-
-// @Component({
-//   selector: 'app-registration',
-//   standalone: true,
-//   imports: [CommonModule, FormsModule, RouterLink],
-//   templateUrl: './registerform.component.html',
-//   styleUrls: ['./registerform.component.css']
-// })
-// export class RegistrationComponent implements OnInit {
-//   private cityService = inject(CityService);
-//   cities = this.cityService.cities;
-  
-//   constructor() {
-//     // Load cities when component is instantiated
-//   this.loadCities();
-//   }
-//   registrationData = {
-//     firstName: '',
-//     lastName: '',
-//     dateOfBirth: '',
-//     streetAddress: '',
-//     selectedCity: '',
-//     hasCar: null as boolean | null,
-//     carModel: '',
-//     phone: '',
-//     email: '',
-//     password: '',
-//     confirmPassword: ''
-//   };
-// carModels: any;
-
-//   showCarModelSection = false;
-
-//   onCarOptionChange(hasCar: boolean) {
-//     this.registrationData.hasCar = hasCar;
-//     this.showCarModelSection = hasCar;
-//     if (!hasCar) {
-//       this.registrationData.carModel = '';
-//     }
-//   }
-
-//   onSubmit() {
-//     console.log('Form submitted:', this.registrationData);
-//     // Add your form submission logic here
-//   }
-
-//   ngOnInit() {
-//     this.loadCities();
-//   }
-//   loadCities() {
-//     this.cityService.loadCities();
-//   }
-
-// }
-
-
-// src/app/registration/registerform.component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -78,6 +15,7 @@ import { city } from '../../shared/city';
 export class RegisterComponent implements OnInit {
   private cityService = inject(CityService);
   cities = this.cityService.cities;
+  registrationForm: any;
   constructor() {
     this.loadCities();
   }
