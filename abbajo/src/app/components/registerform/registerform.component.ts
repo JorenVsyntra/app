@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CityService } from '../../shared/city.service';
 import { city } from '../../shared/city';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 
 @Component({
