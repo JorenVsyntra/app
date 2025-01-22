@@ -28,7 +28,8 @@ export class RegisterComponent implements OnInit {
     streetAddress: '',
     selectedCity: '',
     hasCar: null as boolean | null,
-    carModel: '',
+    type: '',
+    carSeats: 0,
     phone: '',
     email: '',
     password: '',
@@ -43,7 +44,7 @@ carModels: any;
     this.registerData.hasCar = hasCar;
     this.showCarModelSection = hasCar;
     if (!hasCar) {
-      this.registerData.carModel = '';
+      this.registerData.type = '';
     }
   }
 
@@ -63,7 +64,8 @@ carModels: any;
           dob: this.registerData.dateOfBirth,
           address: this.registerData.streetAddress,
           city_id: this.registerData.selectedCity,
-          car_id: this.registerData.carModel || null
+          type: this.registerData.type || null,
+          carseats: this.registerData.carSeats || null
         })
       });
 

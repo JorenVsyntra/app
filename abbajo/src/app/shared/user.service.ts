@@ -62,4 +62,28 @@ export class UserService {
       throw error;
     }
   }
+  async postUser(user: User) {
+    try {
+      const response = await fetch(this.usersUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+      
+      if (!response.ok) throw new Error('Failed to create user');
+      
+      const data = await response.json();
+      const createdUser = data.user;
+      
+      this.users.update(users => [...users, createdUser]);
+      
+      return createdUser;
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
+  }
 }
