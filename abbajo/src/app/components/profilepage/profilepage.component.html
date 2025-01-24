@@ -4,118 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Account</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style> @import 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css';</style>
     <link rel="stylesheet" href="../profilepage/profilepage.component.css">
 </head>
-<body class="bg-gray-200">
-
-        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="max-w-3xl mx-auto my-8 px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
-            <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Manage Your Profile Information</h2>
-            <h1 class="text-center text-xl font-bold text-gray-800 mb-6">Edit Account</h1>
-        
-            <!-- Name Section -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <label class="block mb-2 text-gray-600 font-medium">First Name</label>
-                    <input 
-                        type="text" 
-                        formControlName="firstname"
-                        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-                <div>
-                    <label class="block mb-2 text-gray-600 font-medium">Last Name</label>
-                    <input 
-                        type="text" 
-                        formControlName="lastname"
-                        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-            </div>
-        
-            <!-- Contact Info -->
-            <h3 class="text-lg font-bold text-gray-800 mb-4">Contact Info</h3>
-            <div class="mb-6">
-                <label class="block mb-2 text-gray-600 font-medium">E-mail</label>
-                <input 
-                    type="email" 
-                    formControlName="email"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-            </div>
-            <div class="mb-6">
-                <label class="block mb-2 text-gray-600 font-medium">Phone</label>
-                <input 
-                    type="tel" 
-                    formControlName="phone"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-            </div>
-            <div class="mb-6">
-                <label class="block mb-2 text-gray-600 font-medium">Address</label>
+<body class="">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="max-w-3xl mx-auto my-8 px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
+        <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Manage Your Profile Information</h2>
+        <h1 class="text-center text-xl font-bold text-gray-800 mb-6">Edit Account</h1>
+    
+        <!-- Name Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">First Name</label>
                 <input 
                     type="text" 
-                    formControlName="address"
+                    formControlName="firstname"
                     class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
-
-            <!-- city dropdown select -->
-            <div class="mb-6">
-                <label class="block mb-2 text-gray-600 font-medium">City</label>
-                <select
-                    id="cities"
-                    formControlName="city_id"
-                    name="city"
-                    required
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                    <option value="">Select a city</option>
-                    @for (city of cities(); track $index) {
-                    <option [value]="city.id">
-                        {{ city.name }} {{ city.country ? '- ' + city.country.name : '' }}
-                    </option>
-                    }
-                </select>
-            </div>
-        
-            <!-- About Yourself -->
-            <h3 class="text-lg font-bold text-gray-800 mb-4">About Yourself</h3>
-            <div class="mb-6">
-                <label class="block mb-2 text-gray-600 font-medium">Biographical Info</label>
-                <textarea 
-                    rows="4" 
-                    formControlName="bio"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
-            </div>
-            <!-- dob -->
-            <div class="mb-6">
-                <label class="block mb-2 text-gray-600 font-medium">Date of Birth</label>
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Last Name</label>
                 <input 
-                    type="date" 
-                    formControlName="dob"
+                    type="text" 
+                    formControlName="lastname"
                     class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
-            <!-- car -->
-            <h3 class="text-lg font-bold text-gray-800 mb-4">Car</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <label class="block mb-2 text-gray-600 font-medium">Type Car</label>
-                    <input 
-                        type="text" 
-                        formControlName="type"
-                        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-                <div>
-                    <label class="block mb-2 text-gray-600 font-medium">Car Seats</label>
-                    <input 
-                        type="number" 
-                        formControlName="carseats"
-                        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-            </div>
-            <!-- Submit Button -->
-            <button 
-                type="submit"
-                class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200">
-                Update
-            </button>
-        </form>
+        </div>
+    
+        <!-- Contact Info -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Contact Info</h3>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">E-mail</label>
+            <input 
+                type="email" 
+                formControlName="email"
+                class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Phone</label>
+            <input 
+                type="tel" 
+                formControlName="phone"
+                class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Address</label>
+            <input 
+                type="text" 
+                formControlName="address"
+                class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
 
+        <!-- city dropdown select -->
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">City</label>
+            <select
+                id="cities"
+                formControlName="city_id"
+                name="city"
+                required
+                class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+                <option value="">Select a city</option>
+                @for (city of cities(); track $index) {
+                <option [value]="city.id">
+                    {{ city.name }} {{ city.country ? '- ' + city.country.name : '' }}
+                </option>
+                }
+            </select>
+        </div>
+    
+        <!-- About Yourself -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4">About Yourself</h3>
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Biographical Info</label>
+            <textarea 
+                rows="4" 
+                formControlName="bio"
+                class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+        </div>
+        <!-- dob -->
+        <div class="mb-6">
+            <label class="block mb-2 text-gray-600 font-medium">Date of Birth</label>
+            <input 
+                type="date" 
+                formControlName="dob"
+                class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+        </div>
+        <!-- car -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Car</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Type Car</label>
+                <input 
+                    type="text" 
+                    formControlName="type"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Car Seats</label>
+                <input 
+                    type="number" 
+                    formControlName="carseats"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+        </div>
+        <!-- Submit Button -->
+        <button 
+            type="submit"
+            class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200">
+            Update
+        </button>
+    </form>
 </body>
 </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>posttravel</title>
+    <style> @import 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css';</style>
+</head>
+<body>
+    <div class="max-w-3xl mx-auto my-8 px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
+        <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Create a New Travel</h2>
+        <form [formGroup]="travelForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <!-- Search Options -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Search Location</h3>
+                    <label class="text-gray-600 font-medium">Search City</label>
+                    <input
+                        type="text"
+                        formControlName="searchStart"
+                        placeholder="Search City"
+                        (input)="onSearchInputStart()"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                    <div class="mt-4">
+                        @for (city of filteredCities(); track $index) {
+                            <div class="px-3 py-2 hover:bg-green-50">
+                                {{ city.name }}
+                            </div>
+                        }
+                    </div>
+            </div>
+
+            <!-- Start Location -->
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Start Location ID</label>
+                <input
+                    type="number"
+                    id="startlocation_id"
+                    formControlName="startlocation_id"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Date</label>
+                <input
+                    type="date"
+                    id="date"
+                    formControlName="date"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+            </div>
+
+            <!-- Fee -->
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Fee</label>
+                <input
+                    type="number"
+                    id="fee"
+                    formControlName="fee"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+            </div>
+
+            <!-- Kilometers -->
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Distance (km)</label>
+                <input
+                    type="number"
+                    id="km"
+                    formControlName="km"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+            </div>
+
+            <!-- Car -->
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Car</label>
+                <input
+                    type="text"
+                    id="car_id"
+                    formControlName="car_id"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+            </div>
+
+            <!-- Driver -->
+            <div>
+                <label class="block mb-2 text-gray-600 font-medium">Driver</label>
+                <input
+                    type="text"
+                    id="user_id"
+                    formControlName="user_id"
+                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+            </div>
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                [disabled]="travelForm.invalid"
+                class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200"
+            >
+                Create Travel
+            </button>
+        </form>
+    </div>
+</body>
+</html>

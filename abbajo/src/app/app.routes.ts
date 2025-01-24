@@ -5,7 +5,8 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { AboutComponent } from './components/about/about.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { ProfilepageComponent } from './components/profilepage/profilepage.component';
-import { MytripsComponent } from './components/mytrips/mytrips.component';
+import { MytripsComponent } from './components/mytrips/mytrips.component';  
+import { PosttravelComponent } from './components/posttravel/posttravel.component';
 
 
 export const routes: Routes = [
@@ -18,4 +19,5 @@ export const routes: Routes = [
     { path: 'about', component:AboutComponent},
     { path: 'FAQ', component:FaqComponent},
     { path: '', redirectTo: '/homepage', pathMatch: 'full'},
+    { path: 'posttravel', component: PosttravelComponent},
 ];
