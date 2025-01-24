@@ -16,7 +16,7 @@ import { travel } from '../../shared/travel';
     ReactiveFormsModule, 
   ],
   templateUrl: './posttravel.component.html',
-  styleUrls: ['./posttravel.component.scss'],
+  styleUrls: ['./posttravel.component.css'],
   })
 export class PosttravelComponent implements OnInit {
   private travelService = inject(TravelService);
