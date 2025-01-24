@@ -1,0 +1,25 @@
+/* Overschrijf de stijl van het mat-form-field */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #ccc; /* Standaard randkleur */
+  }
+  
+  /* Groene rand bij focus */
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: green !important; /* Groene randkleur bij focus */
+  }
+  
+  /* Tekstkleur van het label bij focus */
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+    color: green !important; /* Groene tekstkleur bij focus */
+  }
+  
+  /* Achtergrondkleur van het invoerveld */
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+    background-color: #f9f9f9; /* Lichtgrijze achtergrond */
+    border-radius: 4px; /* Randradius */
+  }
+  
+  /* Tekstkleur van het invoerveld */
+  .mat-form-field-appearance-outline .mat-input-element {
+    color: #333; /* Donkergrijze tekstkleur */
+  }

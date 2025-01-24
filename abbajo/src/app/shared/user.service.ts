@@ -8,15 +8,14 @@ export class UserService {
   private usersUrl = 'http://localhost:8000/api/users';
   selectedUser = signal<User | null>(null); 
   users = signal<User[]>([]);
-
-  constructor() {}
-
+  constructor() { }
+ 
   async loadUsers() {
     try {
       const response = await fetch(this.usersUrl);
       if (!response.ok) throw new Error('Failed to load users');
       const data = await response.json();
-      this.users.set(data.users); // Note: accessing 'users' from response
+      this.users.set(data.users); 
     } catch (error) {
       console.error('Error loading users:', error);
       throw error;
@@ -28,7 +27,7 @@ export class UserService {
       const response = await fetch(`${this.usersUrl}/${id}`);
       if (!response.ok) throw new Error('Failed to load user');
       const data = await response.json();
-      this.selectedUser.set(data.user); // Note: accessing 'user' from response
+      this.selectedUser.set(data.user);
     } catch (error) {
       console.error('Error loading user:', error);
       throw error;
