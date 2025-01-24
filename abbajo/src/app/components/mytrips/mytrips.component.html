@@ -1,1 +1,62 @@
-<p>mytrips works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style> @import 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css';</style>
+</head>
+<body>
+    <div class="bg-gray-200 min-h-screen py-8">
+        <div class="max-w-3xl mx-auto px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
+          <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">My Trips</h2>
+      
+          <!-- Loading State -->
+          <div @If="isLoading" class="text-center text-gray-600">
+            Loading your trips...
+          </div>
+      
+          <!-- No Trips State -->
+          <div @If="!isLoading && myTrips.length === 0" class="text-center text-gray-600">
+            No trips found.
+          </div>
+      
+          <!-- Trips List -->
+          <div @For="let trip of myTrips" class="mb-6 p-6 border border-gray-300 rounded-lg"></div>
+            <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
+              <h3 class="text-xl font-bold text-gray-800">
+                {{ trip.start_city_name }} to {{ trip.destination_city_name }}
+              </h3>
+              <span class="text-gray-600">{{ trip.travel_date }}</span>
+            </div>
+      
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-gray-600 font-medium mb-2">Start Location</label>
+                <p class="text-gray-800">{{ trip.start_location_address }}</p>
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-2">Destination</label>
+                <p class="text-gray-800">{{ trip.destination_address }}</p>
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-2">Distance</label>
+                <p class="text-gray-800">{{ trip.travel_km }} km</p>
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-2">Travel Fee</label>
+                <p class="text-gray-800">€{{ trip.travel_fee }}</p>
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-2">Vehicle</label>
+                <p class="text-gray-800">{{ trip.car_type }} ({{ trip.car_carseats }} seats)</p>
+              </div>
+              <div>
+                <label class="block text-gray-600 font-medium mb-2">Passengers</label>
+                <p class="text-gray-800">{{ trip.passengers_count }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
