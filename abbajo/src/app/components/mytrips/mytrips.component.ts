@@ -1,135 +1,96 @@
-// import { OnInit } from '@angular/core';
-// import { TravelService } from '../../shared/travel.service';
+// import { Component, OnInit, inject, Signal, signal } from '@angular/core';
 // import { CommonModule } from '@angular/common';
+// import { TravelService } from '../../shared/travel.service';
 // import { travel } from '../../shared/travel';
-// import { Component } from '@angular/core';
+// import { UserService } from '../../shared/user.service';
+// import { User } from '../../shared/user';
+
+
 
 // @Component({
 //   selector: 'app-mytrips',
+//   standalone: true,
+//   imports: [CommonModule],
 //   templateUrl: './mytrips.component.html',
 //   styleUrls: ['./mytrips.component.css']
 // })
 // export class MytripsComponent implements OnInit {
-//   myTrips: travel[] = [];
+//   private travelService = inject(TravelService);
+//   private userService = inject(UserService);
+//   selectedUser: Signal<User | null> = this.userService.selectedUser
+//   travels: Signal<travel[]> = this.travelService.travels
+//   filterdTravels = signal<travel[]>([]);
 //   isLoading = true;
-// trip: any;
+//   getCurrentUserId: any;
 
-//   constructor(private travelService: TravelService) {}
+//   constructor() {}
 
 //   ngOnInit() {
+//     this.loadTravels(1);
 //     this.fetchMyTrips();
 //   }
 
-//   fetchMyTrips() {
-//     this.travelService.loadTravels().then(() => {
-//       // You'll need to implement a method to get current user ID
-//       const currentUserId = this.getCurrentUserId();
-//       this.myTrips = this.travelService.travels().filter(
-//         trip => trip.driver_id === currentUserId
-//       );
-//       this.isLoading = false;
-//     }).catch(error => {
-//       console.error('Error fetching trips:', error);
-//       this.isLoading = false;
-//     });
+//   loadTravels(id: number) {
+//     this.userService.loadUser(id);
 //   }
 
-//   // Placeholder method - replace with actual authentication service
-//   private getCurrentUserId(): number {
-//     return 1; // Example user ID
+//   fetchMyTrips() {
+//     const currentUserId = 1;
+    
+
+//       const Travels = this.travelService.travels().filter(
+//         trip => trip.driver_id === currentUserId
+//       );
+//     this.filterdTravels.set(Travels);
 //   }
 // }
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TravelService } from '../../shared/travel.service';
 import { travel } from '../../shared/travel';
+import { UserService } from '../../shared/user.service';
+import { User } from '../../shared/user';
 
 @Component({
   selector: 'app-mytrips',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="bg-gray-200 min-h-screen py-8">
-      <div class="max-w-3xl mx-auto px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
-        <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">My Trips</h2>
-
-        @if (isLoading) {
-          <div class="text-center text-gray-600">
-            Loading your trips...
-          </div>
-        }
-
-        @if (!isLoading && myTrips.length === 0) {
-          <div class="text-center text-gray-600">
-            No trips found.
-          </div>
-        }
-
-        @for (trip of myTrips; track trip.id) {
-          <div class="mb-6 p-6 border border-gray-300 rounded-lg">
-            <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
-              <h3 class="text-xl font-bold text-gray-800">
-                {{ trip.start_city_name }} to {{ trip.destination_city_name }}
-              </h3>
-              <span class="text-gray-600">{{ trip.travel_date }}</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-gray-600 font-medium mb-2">Start Location</label>
-                <p class="text-gray-800">{{ trip.start_location_address }}</p>
-              </div>
-              <div>
-                <label class="block text-gray-600 font-medium mb-2">Destination</label>
-                <p class="text-gray-800">{{ trip.destination_city_id }}</p>
-              </div>
-              <div>
-                <label class="block text-gray-600 font-medium mb-2">Distance</label>
-                <p class="text-gray-800">{{ trip.travel_km }} km</p>
-              </div>
-              <div>
-                <label class="block text-gray-600 font-medium mb-2">Travel Fee</label>
-                <p class="text-gray-800">€{{ trip.travel_fee }}</p>
-              </div>
-              <div>
-                <label class="block text-gray-600 font-medium mb-2">Vehicle</label>
-                <p class="text-gray-800">{{ trip.car_type }} ({{ trip.car_carseats }} seats)</p>
-              </div>
-              <div>
-                <label class="block text-gray-600 font-medium mb-2">Passengers</label>
-                <p class="text-gray-800">{{ trip.passengers_count }}</p>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  `
+  templateUrl: './mytrips.component.html',
+  styleUrls: ['./mytrips.component.css']
 })
 export class MytripsComponent implements OnInit {
-  myTrips: travel[] = [];
-  isLoading = true;
+  private travelService = inject(TravelService);
+  private userService = inject(UserService);
 
-  constructor(@Inject(TravelService) private travelService: TravelService) {}
+  selectedUser: Signal<User | null> = this.userService.selectedUser;
+  travels: Signal<travel[]> = this.travelService.travels;
+  filteredTravels = signal<travel[]>([]);
+  isLoading = signal(true);
+
+  constructor() {}
 
   ngOnInit() {
-    this.fetchMyTrips();
+    // Assuming you want to load trips for a specific user
+    this.loadUserAndTrips(1);
   }
 
-  fetchMyTrips() {
-    this.travelService.loadTravels().then(() => {
-      const currentUserId = this.getCurrentUserId();
-      this.myTrips = this.travelService.travels().filter(
-        (trip: travel) => trip.driver_id === currentUserId
-      );
-      this.isLoading = false;
-    }).catch((error: any) => {
-      console.error('Error fetching trips:', error);
-      this.isLoading = false;
+  loadUserAndTrips(userId: number) {
+    // Load user first, then filter travels
+    this.userService.loadUser(userId).then(() => {
+      this.fetchMyTrips(userId);
+    }).catch(error => {
+      console.error('Error loading user:', error);
+      this.isLoading.set(false);
     });
   }
 
-  private getCurrentUserId(): number {
-    return 1; // Replace with actual authentication logic
+  fetchMyTrips(userId: number) {
+    // Filter travels for the specific user
+    const userTravels = this.travelService.travels().filter(
+      trip => trip.driver_id === userId
+    );
+    
+    this.filteredTravels.set(userTravels);
+    this.isLoading.set(false);
   }
 }
