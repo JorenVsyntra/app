@@ -8,102 +8,152 @@
 </head>
 <body>
     <div class="max-w-3xl mx-auto my-8 px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
-        <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Create a New Travel</h2>
+        <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Create a New Trip</h2>
         <form [formGroup]="travelForm" (ngSubmit)="onSubmit()" class="space-y-6">
-            <!-- Search Options -->
-            <div>
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Search Location</h3>
-                    <label class="text-gray-600 font-medium">Search City</label>
+            <div class="grid grid-cols-8 gap-4 mb-6">
+                <!-- Search StartLocation -->
+                <div class="col-span-3">
+                        <label class="block mb-2 font-medium text-gray-600">Start Location</label>
+                        <input
+                            type="text"
+                            formControlName="searchStart"
+                            placeholder="Search City"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                            (input)="onSearchInputStart($event)"
+                            (focus)="startDropdown = true"
+                            (blur)="onBlur()"
+                        />
+                        @if (startDropdown && filteredCities().length > 0) {
+                        <div class="dropdown absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                            @for (city of filteredCities(); track $index) {
+                                <div class="dropdown-item p-2 hover:bg-gray-200 cursor-pointer"
+                                (mousedown)="selectStartCity(city.id)">
+                                    {{ city.name }}
+                                </div>
+                            }
+                        </div>
+                        }
+                </div>
+
+                <!-- Search Destination -->
+                <div class="col-span-3">
+                    <label class="block mb-2 text-gray-600 font-medium">Destination</label>
                     <input
                         type="text"
-                        formControlName="searchStart"
+                        formControlName="searchDest"
                         placeholder="Search City"
-                        (input)="onSearchInputStart($event)"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                        (input)="onSearchInputDest($event)"
+                        (focus)="destDropdown = true"
+                        (blur)="onBlur()"
                     />
-                    <div class="mt-4">
+                    @if (destDropdown && filteredCities().length > 0) {
+                    <div class="dropdown absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                         @for (city of filteredCities(); track $index) {
-                            <div class="px-3 py-2 hover:bg-green-50">
+                            <div class="dropdown-item p-2 hover:bg-gray-200 cursor-pointer"
+                            (mousedown)="selectDestCity(city.id)">
                                 {{ city.name }}
                             </div>
                         }
                     </div>
+                    }
+                </div>
+
+                <!-- Date -->
+                <div class="col-span-2">
+                    <label class="block mb-2 text-gray-600 font-medium">Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        formControlName="date"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
             </div>
 
-            <!-- Start Location -->
-            <div>
-                <label class="block mb-2 text-gray-600 font-medium">Start Location ID</label>
-                <input
-                    type="number"
-                    id="startlocation_id"
-                    formControlName="startlocation_id"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
+            <div class="grid grid-cols-4 gap-4 mb-6">   
+
+                <!-- Driver -->
+                <div class="col-span-2">
+                    <label class="block mb-2 text-gray-600 font-medium">Driver</label>
+                    <input
+                        type="text"
+                        id="user_id"
+                        formControlName="user_id"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                        readonly
+                    />
+                </div>
+
+                <!-- Car -->
+                <div class="col-span-2">
+                    <label class="block mb-2 text-gray-600 font-medium">Car</label>
+                    <input
+                        type="text"
+                        id="car_id"
+                        formControlName="car_id"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                        readonly
+                    />
+                </div>
             </div>
 
-            <!-- Date -->
-            <div>
-                <label class="block mb-2 text-gray-600 font-medium">Date</label>
-                <input
-                    type="date"
-                    id="date"
-                    formControlName="date"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-            </div>
-
-            <!-- Fee -->
-            <div>
-                <label class="block mb-2 text-gray-600 font-medium">Fee</label>
-                <input
+            <div class="grid grid-cols-5 gap-4 mb-6">
+                <!-- Fee/100km -->
+                <div class="col-span-1">
+                  <label class="block mb-2 text-gray-600 font-medium">Fee/100km</label>
+                  <input
                     type="number"
                     id="fee"
                     formControlName="fee"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-            </div>
-
-            <!-- Kilometers -->
-            <div>
-                <label class="block mb-2 text-gray-600 font-medium">Distance (km)</label>
-                <input
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+              
+                <!-- Kilometers -->
+                <div class="col-span-1">
+                  <label class="block mb-2 text-gray-600 font-medium">Distance (km)</label>
+                  <input
                     type="number"
                     id="km"
                     formControlName="km"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-            </div>
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
 
-            <!-- Car -->
-            <div>
-                <label class="block mb-2 text-gray-600 font-medium">Car</label>
-                <input
-                    type="text"
-                    id="car_id"
-                    formControlName="car_id"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
+                <!-- price -->
+                <div class="col-span-1">
+                  <label class="block mb-2 text-gray-600 font-medium">Price</label>
+                  <input
+                    type="number"
+                    id="price"
+                    formControlName="price"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+                    readonly
+                  />
+                </div>
+                 <!-- Submit Button -->
+                <div class="col-span-2">
+                    <button
+                        type="submit"
+                        [disabled]="travelForm.invalid"
+                        class="w-full mt-8 
+                        transition-transform duration-200 ease-in-out 
+                        {{ isButtonActive ? 'scale-95' : 'hover:scale-105' }}
+                        bg-green-500 
+                        text-white 
+                        px-4 
+                        py-2 
+                        rounded-lg 
+                        hover:bg-green-600"
+                        (mousedown)="onButtonMouseDown($event)"
+                        (mouseup)="onButtonMouseUp($event)"
+                        (mouseleave)="onButtonMouseUp($event)"
+                    >
+                    Create Trip
+                    </button>
+                </div>
             </div>
-
-            <!-- Driver -->
-            <div>
-                <label class="block mb-2 text-gray-600 font-medium">Driver</label>
-                <input
-                    type="text"
-                    id="user_id"
-                    formControlName="user_id"
-                    class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-            </div>
-
-            <!-- Submit Button -->
-            <button
-                type="submit"
-                [disabled]="travelForm.invalid"
-                class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200"
-            >
-                Create Travel
-            </button>
         </form>
     </div>
 </body>

@@ -27,10 +27,15 @@ export class PosttravelComponent implements OnInit {
   selectedUser: Signal<User | null> = this.userService.selectedUser;
   cities: Signal<city[]> = this.cityService.cities;
   filteredCities = signal<city[]>([]);
+  startLoc = signal<city | null>(null);
+  destLoc = signal<city | null>(null);
+  startDropdown = false;
+  destDropdown = false;
+  isButtonActive = false;
 
   travelForm = new FormGroup({
     destination_id: new FormControl<number | null>(null),
-    startlocation_id: new FormControl(''),
+    startlocation_id: new FormControl<number | null>(null),
     date: new FormControl(''),
     fee: new FormControl<number | null>(null),
     km: new FormControl<number | null>(null),
@@ -38,31 +43,55 @@ export class PosttravelComponent implements OnInit {
     car_id: new FormControl(''),
     searchStart: new FormControl(''),
     searchDest: new FormControl(''),
+    price: new FormControl<number | null>(null),
   });
 
   constructor() {
     effect(() => {
       const user = this.selectedUser();
+      const km = this.travelForm.get('km')?.value ?? 0;
+      const fee = this.travelForm.get('fee')?.value ?? 0;
+      const calculatedPrice = (km / 100) * fee;
+
       if (user) {
         console.log('Current user:', user);
         this.travelForm.patchValue({
           user_id: user.firstname + ' ' + user.lastname,
           car_id: user.car?.type,
+          searchStart: this.startLoc()?.name,
+          searchDest: this.destLoc()?.name,
+          price: calculatedPrice 
         }, { emitEvent: false });
       }
-    })
+    });
+    // Add listeners to update price when km or fee changes
+    this.travelForm.get('km')?.valueChanges.subscribe(() => {
+      const km = this.travelForm.get('km')?.value ?? 0;
+      const fee = this.travelForm.get('fee')?.value ?? 0;
+      const calculatedPrice = (km / 100) * fee;
+      
+      this.travelForm.patchValue({ 
+        price: calculatedPrice 
+      }, { emitEvent: false });
+    });
+
+    this.travelForm.get('fee')?.valueChanges.subscribe(() => {
+      const km = this.travelForm.get('km')?.value ?? 0;
+      const fee = this.travelForm.get('fee')?.value ?? 0;
+      const calculatedPrice = (km / 100) * fee;
+      
+      this.travelForm.patchValue({ 
+        price: calculatedPrice 
+      }, { emitEvent: false });
+    });
   }
   
   ngOnInit() {
-    this.loadTravels();
-    this.loadUser(1);
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.loadUser(parseInt(storedUserId, 10));
+    }
     this.loadCities();
-  }
-
-  loadTravels() {
-    this.travelService.loadTravels().then(() => {
-      console.log('Travels loaded:', this.travels());
-    });
   }
 
   loadUser(id: number) {
@@ -70,9 +99,7 @@ export class PosttravelComponent implements OnInit {
   }
 
   loadCities() {
-    this.cityService.loadCities().then(() => {
-      console.log('Cities loaded:', this.cities());
-    });
+    this.cityService.loadCities();
   }
 
   onSearchInputStart(event: Event) {
@@ -85,6 +112,39 @@ export class PosttravelComponent implements OnInit {
       city.name.toLowerCase().includes(searchStart)
     );
     this.filteredCities.set(filtered);
+    this.startDropdown = true;
+  }
+
+  onSearchInputDest(event: Event) {
+    const searchDest = (event.target as HTMLInputElement).value.toLowerCase();
+    if (!searchDest) {
+      this.filteredCities.set(this.cities());
+      return;
+    }
+    const filtered = this.cities().filter(city =>
+      city.name.toLowerCase().includes(searchDest)
+    );
+    this.filteredCities.set(filtered);
+    this.destDropdown = true;
+  }
+
+  onBlur() {
+    setTimeout(() => {
+      this.startDropdown = false;
+      this.destDropdown = false;
+    }, 200);
+  }
+
+  selectStartCity(id: number) {
+    console.log('Selected City ID:', id);
+    this.startDropdown = false;
+    this.startLoc.set(this.cities().find(city => city.id === id) ?? null);
+  }
+
+  selectDestCity(id: number) {
+    console.log('Selected City ID:', id);
+    this.destDropdown = false;
+    this.destLoc.set(this.cities().find(city => city.id === id) ?? null);
   }
 
   async onSubmit() {
@@ -95,8 +155,8 @@ export class PosttravelComponent implements OnInit {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          destination_id: this.travelForm.value.destination_id!,
-          startlocation_id: this.travelForm.value.startlocation_id!,
+          destination_id: this.destLoc()?.id,
+          startlocation_id: this.startLoc()?.id,
           date: this.travelForm.value.date!,
           fee: this.travelForm.value.fee!,
           km: this.travelForm.value.km!,
@@ -117,5 +177,13 @@ export class PosttravelComponent implements OnInit {
       console.error('Trip posting error:', error);
       // Handle registration error (show error message to user)
     }
+  }
+
+  onButtonMouseDown(event: MouseEvent) {
+    this.isButtonActive = true;
+  }
+
+  onButtonMouseUp(event: MouseEvent) {
+    this.isButtonActive = false;
   }
 }

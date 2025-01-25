@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from './shared/auth.service';
 //import { ProfilePageComponent } from './components/profilepage/profilepage.component';
 
 @Component({
@@ -10,6 +11,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [CommonModule, RouterOutlet, RouterLink,  ]
 })
 export class AppComponent {
+  private authService = inject(AuthService);
+  logout() {
+    this.authService.logout();
+  }
   title = 'abbajo';
 //filteredPosts: any;
 }

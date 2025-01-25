@@ -1,10 +1,11 @@
-import { Component, OnInit, Signal, inject, effect } from '@angular/core';
+import { Component, OnInit, Signal, signal, inject, effect } from '@angular/core';
 import { UserService } from '../../shared/user.service';
 import { User } from '../../shared/user';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CityService } from '../../shared/city.service';
 import { city } from '../../shared/city';
+import { travel } from '../../shared/travel';
 
 @Component({
   selector: 'app-profile-page',
@@ -55,13 +56,11 @@ export class ProfilepageComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.loadUsers();
-    this.loadUser(1);
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.loadUser(parseInt(storedUserId, 10));
+    }
     this.loadCities();
-  }
-
-  loadUsers() {
-    this.userService.loadUsers();
   }
 
   loadUser(id: number) {
@@ -69,9 +68,7 @@ export class ProfilepageComponent implements OnInit {
   }
 
   loadCities() {
-    this.cityService.loadCities().then(() => {
-      console.log('Cities loaded:', this.cities());
-    });
+    this.cityService.loadCities();
   }
 
   async onSubmit() {

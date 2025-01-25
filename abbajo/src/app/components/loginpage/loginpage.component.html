@@ -9,28 +9,49 @@
 <body class="bg-gray-50">
   <div class="max-w-2xl mx-auto my-8 px-8 sm:px-12 py-8 bg-white rounded-lg shadow-md">
     <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Login</h2>
-    
-    <div class="mb-6">
-      <label for="email" class="block mb-2 text-gray-600 font-medium">Email <span class="text-red-500">*</span></label>
-      <input type="email" id="email" required placeholder="john.doe@example.com" 
-        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-    </div>
 
-    <div class="mb-6">
-      <label for="password" class="block mb-2 text-gray-600 font-medium">Password <span class="text-red-500">*</span></label>
-      <input type="password" id="password" required placeholder="Password"
-        class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
-    </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <div class="mb-6">
+        <label for="email" class="block mb-2 text-gray-600 font-medium">Email <span class="text-red-500">*</span></label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          placeholder="john.doe@example.com" 
+          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+      </div>
 
-    <div class="mb-2 text-right">
-      <a routerLink="" class="text-green-500 hover:text-green-600 text-sm">Forgot Password?</a>
-    </div>
+ 
+      <div class="mb-6">
+        <label for="password" class="block mb-2 text-gray-600 font-medium">Password <span class="text-red-500">*</span></label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          placeholder="Password"
+          class="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+      </div>
 
-    <div class="mb-6">
-      <button type="submit" class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed">
-        <a href="" class="w-full h-full block"> Login</a>
-      </button>
-    </div>
+      <div class="mb-2 text-right">
+        <a routerLink="" class="text-green-500 hover:text-green-600 text-sm">Forgot Password?</a>
+      </div>
+
+
+      @if (errorMessage()) {
+        <div class="text-red-500 mb-4">{{ errorMessage() }}</div>
+      }
+
+     
+      <div class="mb-6">
+        <button type="submit" 
+          [disabled]="isLoading()"
+          class="w-full py-4 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed">
+          {{ isLoading() ? 'Logging in...' : 'Login' }}
+        </button>
+      </div>
+    </form>
 
     <div class="text-center">
       <p>Don't have an account? 

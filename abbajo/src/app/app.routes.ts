@@ -7,17 +7,18 @@ import { FaqComponent } from './components/faq/faq.component';
 import { ProfilepageComponent } from './components/profilepage/profilepage.component';
 import { MytripsComponent } from './components/mytrips/mytrips.component';  
 import { PosttravelComponent } from './components/posttravel/posttravel.component';
+import { authGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
 
     { path: 'homepage', component: HomepageComponent},
-    { path: 'profile', component: ProfilepageComponent},
-    { path: 'loggingin', component: LoginPageComponent },
+    { path: 'profile', component: ProfilepageComponent, canActivate: [authGuard]},
+    { path: 'logingin', component: LoginPageComponent },
     { path: 'registration', component: RegisterComponent},
-    { path: 'mytrips', component: MytripsComponent},
+    { path: 'mytrips', component: MytripsComponent, canActivate: [authGuard]},
     { path: 'about', component:AboutComponent},
     { path: 'FAQ', component:FaqComponent},
     { path: '', redirectTo: '/homepage', pathMatch: 'full'},
-    { path: 'posttravel', component: PosttravelComponent},
+    { path: 'posttravel', component: PosttravelComponent, canActivate: [authGuard]},
 ];

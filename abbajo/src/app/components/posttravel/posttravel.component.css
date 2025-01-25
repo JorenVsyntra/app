@@ -1,25 +1,24 @@
-/* Overschrijf de stijl van het mat-form-field */
-.mat-form-field-appearance-outline .mat-form-field-outline {
-    color: #ccc; /* Standaard randkleur */
+/* Stijl voor de dropdown */
+.dropdown {
+    position: absolute;
+    z-index: 10;
+    width: 20%;
+    background-color: white;
+    border: 1px solid #afaeae;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
   }
   
-  /* Groene rand bij focus */
-  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-    color: green !important; /* Groene randkleur bij focus */
+  /* Stijl voor de dropdown-items */
+  .dropdown-item {
+    padding: 8px 16px;
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
   }
   
-  /* Tekstkleur van het label bij focus */
-  .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
-    color: green !important; /* Groene tekstkleur bij focus */
-  }
-  
-  /* Achtergrondkleur van het invoerveld */
-  .mat-form-field-appearance-outline .mat-form-field-flex {
-    background-color: #f9f9f9; /* Lichtgrijze achtergrond */
-    border-radius: 4px; /* Randradius */
-  }
-  
-  /* Tekstkleur van het invoerveld */
-  .mat-form-field-appearance-outline .mat-input-element {
-    color: #333; /* Donkergrijze tekstkleur */
+  .dropdown-item:hover {
+    background-color: rgb(224, 255, 226);
   }
