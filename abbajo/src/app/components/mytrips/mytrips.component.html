@@ -33,27 +33,27 @@
       
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2">Start Location</label>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Start Location:</label>
                   <p class="text-gray-800">{{ trip.start_location_address }}</p>
                 </div>
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2">Destination</label>
-                  <p class="text-gray-800">{{ trip.destination_city_id }}</p>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Destination:</label>
+                  <p class="text-gray-800">{{ trip.destination_address }}</p>
                 </div>
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2">Distance</label>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Distance:</label>
                   <p class="text-gray-800">{{ trip.travel_km }} km</p>
                 </div>
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2">Travel Fee</label>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Travel Fee:</label>
                   <p class="text-gray-800">€{{ trip.travel_fee }}</p>
                 </div>
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2">Vehicle</label>
-                  <p class="text-gray-800">{{ trip.car_type }} ({{ trip.car_carseats }} seats)</p>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Vehicle:</label>
+                  <p class="text-gray-800">{{ trip.car_type }} {{ trip.car_carseats }}</p>
                 </div>
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2">Passengers</label>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Passengers:</label>
                   <p class="text-gray-800">{{ trip.passengers_count }}</p>
                 </div>
               </div>

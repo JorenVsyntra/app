@@ -51,6 +51,7 @@ import { travel } from '../../shared/travel';
 import { UserService } from '../../shared/user.service';
 import { User } from '../../shared/user';
 
+
 @Component({
   selector: 'app-mytrips',
   standalone: true,
@@ -71,13 +72,20 @@ export class MytripsComponent implements OnInit {
 
   ngOnInit() {
     // Assuming you want to load trips for a specific user
-    this.loadUserAndTrips(1);
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.loadUserAndTrips(parseInt(storedUserId, 10));
+    }
+    this.loadtravels();
   }
-
+loadtravels () {
+  this.travelService.loadTravels();
+}
   loadUserAndTrips(userId: number) {
     // Load user first, then filter travels
     this.userService.loadUser(userId).then(() => {
       this.fetchMyTrips(userId);
+      console.log('Trips loaded:', this.travels());
     }).catch(error => {
       console.error('Error loading user:', error);
       this.isLoading.set(false);
@@ -86,7 +94,7 @@ export class MytripsComponent implements OnInit {
 
   fetchMyTrips(userId: number) {
     // Filter travels for the specific user
-    const userTravels = this.travelService.travels().filter(
+    const userTravels = this.travels().filter(
       trip => trip.driver_id === userId
     );
     
