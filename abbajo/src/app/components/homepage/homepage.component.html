@@ -9,27 +9,51 @@
 <body>
 
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
-    <h1 class="text-2xl font-bold mb-2 text-gray-800">Search Routes</h1>
-    <p class="text-sm text-gray-500 mb-4">subtext</p>
-  
-    <div class="flex items-center mb-4">
-      <input type="text" (input)="($event)" placeholder="Enter your query..." 
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"/>
-      <button class="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Search</button>
-    </div>
-  
-    <div class="flex space-x-2 mb-4">
-      <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">All</button>
-    </div>
-  
-    <div>
-      <h2 class="text-xl font-semibold mb-2">Results</h2>
-      <ul class="list-disc pl-5 space-y-1">
-        @for (post of filteredPosts; track post) {
-          <li>{{ post }}</li>
-        }
-      </ul>
-    </div>
-  
+  <h1 class="text-2xl font-bold mb-2 text-gray-800">Search Routes</h1>
+  <p class="text-sm text-gray-500 mb-4">Find available trips</p>
+
+  <div class="flex items-center mb-4">
+    <input 
+      type="text" 
+      [formControl]="searchControl"
+      (input)="onSearch($event)" 
+      placeholder="Search by city..." 
+      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+    />
+    <button 
+      (click)="showAll()" 
+      class="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+      All
+    </button>
   </div>
+
+  <div class="space-y-4">
+    @for (travel of filteredTravels(); track travel.id) {
+      <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-lg font-semibold">
+            {{ travel.start_city_name }} → {{ travel.destination_city_name }}
+          </h3>
+          <span class="text-gray-600">{{ travel.travel_date }}</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p class="text-gray-600">Distance: {{ travel.travel_km }}km</p>
+            <p class="text-gray-600">Fee: €{{ travel.travel_fee }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Driver: {{ travel.driver_firstname }} {{ travel.driver_lastname }}</p>
+            <p class="text-gray-600">Vehicle: {{ travel.car_type }}</p>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="text-center text-gray-600 py-8">
+        No trips found
+      </div>
+    }
+  </div>
+</div>
+  
+
   </body>
