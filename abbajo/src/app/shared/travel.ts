@@ -2,6 +2,7 @@ export interface travel {
     id: number;
     destination_id: number;
     start_location_address: string;
+    destination_address: string;
     travel_date: string;
     travel_fee: number;
     travel_km: number;

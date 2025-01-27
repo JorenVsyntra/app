@@ -12,6 +12,11 @@ import { AuthService } from './shared/auth.service';
 })
 export class AppComponent {
   private authService = inject(AuthService);
+
+  constructor() {}
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
   logout() {
     this.authService.logout();
   }

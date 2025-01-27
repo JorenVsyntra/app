@@ -84,6 +84,7 @@ export class TravelService {
       if (!response.ok) throw new Error('Failed to load travels');
       const data = await response.json();
       this.travels.set(data.travels);
+      console.log('Travels loaded:', this.travels());
     } catch (error) {
       console.error('Error loading travels:', error);
       throw error;
