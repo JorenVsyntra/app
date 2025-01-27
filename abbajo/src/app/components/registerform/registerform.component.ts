@@ -10,7 +10,7 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet],
   templateUrl: './registerform.component.html',
   styleUrls: ['./registerform.component.css'],
 })
