@@ -35,7 +35,7 @@
         </div>
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex shrink-0 items-center">
-            <img src="assets/images/logo_nobg2.png" alt="logo" class="block h-10 w-auto" />
+            <img src="assets/images/logo_nobg2.png" routerLink="/homepage" alt="logo" class="block h-10 w-auto" />
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
@@ -72,9 +72,14 @@
             -->
             <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 hidden group-focus-within:block" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" >
               <!-- Active: "bg-gray-100 outline-none", Not Active: "" -->
-              <a routerLink="/logingin" routerLinkActive="active" ariaCurrentWhenActive="page" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0" style="z-index: 10">Your Profile (log-in)</a>
-              <a routerLink="/registration" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">registration</a>
-              <a routerLink="/logingin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" (mousedown)="logout()" tabindex="-1" id="logout">log out</a>
+              @if (isLoggedIn()) {
+                <a routerLink="/profile"  class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0" style="z-index: 10">Your Profile</a>
+                <a routerLink="/logingin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" (mousedown)="logout()" tabindex="-1" id="logout">log out</a>
+              }
+              @else {
+                <a routerLink="/logingin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Login</a>               
+                <a routerLink="/registration" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Register</a>
+              }
             </div>
           </div>
         </div>
