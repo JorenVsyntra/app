@@ -8,7 +8,7 @@ import { ProfilepageComponent } from './components/profilepage/profilepage.compo
 import { MytripsComponent } from './components/mytrips/mytrips.component';  
 import { PosttravelComponent } from './components/posttravel/posttravel.component';
 import { authGuard } from './guards/auth.guard';
-
+import { ContactComponent } from './components/contact/contact.component';
 
 export const routes: Routes = [
 
@@ -21,4 +21,5 @@ export const routes: Routes = [
     { path: 'FAQ', component:FaqComponent},
     { path: '', redirectTo: '/homepage', pathMatch: 'full'},
     { path: 'posttravel', component: PosttravelComponent, canActivate: [authGuard]},
+    { path: 'contact', component: ContactComponent}
 ];
