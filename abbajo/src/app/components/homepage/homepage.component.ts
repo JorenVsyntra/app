@@ -40,4 +40,23 @@ export class HomepageComponent implements OnInit {
     this.filteredTravels.set(this.travels());
     this.searchControl.setValue('');
   }
+
+  // showOnlyAvailable() {
+  //   const filtered = this.travels().filter(travel => travel.available_seats > 0);
+  //   this.filteredTravels.set(filtered);
+  //   this.searchControl.setValue('');
+  // }
+
+  showfromcheapest() {
+    const filtered = this.travels().sort((a, b) => a.travel_fee - b.travel_fee);
+    this.filteredTravels.set(filtered);
+    this.searchControl.setValue('');
+  }
+
+  isDropdownOpen = false;
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
 }

@@ -25,7 +25,41 @@
       class="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
       All
     </button>
+    <div class="relative inline-block text-left">
+      <!-- Dropdown Button -->
+      <button 
+        (click)="toggleDropdown()"
+        class="inline-flex justify-center items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+        <span>Filters</span>
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    
+      @if (isDropdownOpen === true) {
+        <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+          <div class="py-1" role="menu">
+            <button 
+              (click)="showfromcheapest()"
+              (click)="toggleDropdown()"
+              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem">
+              Price: Low to High
+            </button>
+            <button 
+              (click)="showfromcheapest()"
+              (click)="toggleDropdown()"
+              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem">
+              Price: High to Low
+            </button>
+          </div>
+        </div>
+      }
+    </div>
   </div>
+
+  
 
   <div class="space-y-4">
     @for (travel of filteredTravels(); track travel.id) {
