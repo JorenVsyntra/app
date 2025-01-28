@@ -71,10 +71,10 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-4 gap-4 mb-6">   
+            <div class="grid grid-cols-8 gap-4 mb-6">   
 
                 <!-- Driver -->
-                <div class="col-span-2">
+                <div class="col-span-3">
                     <label class="block mb-2 text-gray-600 font-medium">Driver</label>
                     <input
                         type="text"
@@ -86,7 +86,7 @@
                 </div>
 
                 <!-- Car -->
-                <div class="col-span-2">
+                <div class="col-span-3">
                     <label class="block mb-2 text-gray-600 font-medium">Car</label>
                     <input
                         type="text"
@@ -96,7 +96,21 @@
                         readonly
                     />
                 </div>
+                <div class="col-span-2">
+                    <label class="block mb-2 text-gray-600 font-medium">Available Seats</label>
+                    <input
+                        type="number"
+                        id="av_seats"
+                        formControlName="av_seats"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
             </div>
+            @if (travelForm.get('av_seats')?.errors?.['serverError']) {
+                <div class="error-message">
+                    {{ travelForm.get('av_seats')?.errors?.['serverError'] }}
+                </div>
+                }
 
             <div class="grid grid-cols-5 gap-4 mb-6">
                 <!-- Fee/100km -->

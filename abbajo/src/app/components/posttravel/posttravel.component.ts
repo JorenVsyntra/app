@@ -41,6 +41,7 @@ export class PosttravelComponent implements OnInit {
     km: new FormControl<number | null>(null),
     user_id: new FormControl(''),
     car_id: new FormControl(''),
+    av_seats: new FormControl<number | null>(null),
     searchStart: new FormControl(''),
     searchDest: new FormControl(''),
     price: new FormControl<number | null>(null),
@@ -161,12 +162,26 @@ export class PosttravelComponent implements OnInit {
           fee: this.travelForm.value.fee!,
           km: this.travelForm.value.km!,
           user_id: this.selectedUser()?.id,
-          car_id: this.selectedUser()?.car.id
+          car_id: this.selectedUser()?.car.id,
+          av_seats: this.travelForm.value.av_seats!,
+          price: this.travelForm.value.price!,
         })
       });
 
       const data = await response.json();
       if (!response.ok) {
+        if (response.status === 422) {
+          console.error('Validation errors:', data.errors);
+          // You could display these errors in your template
+          Object.keys(data.errors).forEach(key => {
+            const control = this.travelForm.get(key);
+            if (control) {
+              control.setErrors({
+                serverError: data.errors[key][0]
+              });
+            }
+          });
+        }
         throw new Error(data.message || 'posting trip failed');
       }
       

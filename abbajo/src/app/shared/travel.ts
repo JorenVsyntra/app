@@ -20,6 +20,7 @@ export interface travel {
     car_id: number;
     car_type: string;
     car_carseats: number;
+    travel_av_seats: number;
     passengers_count: number;
   }
    
