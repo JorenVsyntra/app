@@ -42,7 +42,7 @@ export class HomepageComponent implements OnInit {
   }
 
  showOnlyAvailable() {
-     const filtered = this.travels().filter(travel => travel.travel_av_seats > 0);
+     const filtered = this.travels().filter(travel => travel.passengers_count < 2);
      this.filteredTravels.set(filtered);
      this.searchControl.setValue('');
    }
