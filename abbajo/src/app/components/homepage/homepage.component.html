@@ -12,7 +12,7 @@
   <h1 class="text-2xl font-bold mb-2 text-gray-800">Search Routes</h1>
   <p class="text-sm text-gray-500 mb-4">Find available trips</p>
 
-  <div class="flex items-center mb-4">
+  <div class="flex space-x-2 items-center mb-4">
     <input 
       type="text" 
       [formControl]="searchControl"
@@ -29,7 +29,7 @@
       <!-- Dropdown Button -->
       <button 
         (click)="toggleDropdown()"
-        class="inline-flex justify-center items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+        class="inline-flex justify-center items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 ">
         <span>Filters</span>
         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -47,9 +47,9 @@
               Price: Low to High
             </button>
             <button 
-              (click)="showfromcheapest()"
+              (click)="showOnlyAvailable()"
               (click)="toggleDropdown()"
-              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
               role="menuitem">
               Price: High to Low
             </button>
@@ -69,6 +69,7 @@
             {{ travel.start_city_name }} → {{ travel.destination_city_name }}
           </h3>
           <span class="text-gray-600">{{ travel.travel_date }}</span>
+          <!-- <span class="text-gray-600">{{ travel.av_travel }}</span> -->
         </div>
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
