@@ -1,51 +1,6 @@
-// import { Component, OnInit, inject, Signal, signal } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { TravelService } from '../../shared/travel.service';
-// import { travel } from '../../shared/travel';
-// import { UserService } from '../../shared/user.service';
-// import { User } from '../../shared/user';
-
-
-
-// @Component({
-//   selector: 'app-mytrips',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './mytrips.component.html',
-//   styleUrls: ['./mytrips.component.css']
-// })
-// export class MytripsComponent implements OnInit {
-//   private travelService = inject(TravelService);
-//   private userService = inject(UserService);
-//   selectedUser: Signal<User | null> = this.userService.selectedUser
-//   travels: Signal<travel[]> = this.travelService.travels
-//   filterdTravels = signal<travel[]>([]);
-//   isLoading = true;
-//   getCurrentUserId: any;
-
-//   constructor() {}
-
-//   ngOnInit() {
-//     this.loadTravels(1);
-//     this.fetchMyTrips();
-//   }
-
-//   loadTravels(id: number) {
-//     this.userService.loadUser(id);
-//   }
-
-//   fetchMyTrips() {
-//     const currentUserId = 1;
-    
-
-//       const Travels = this.travelService.travels().filter(
-//         trip => trip.driver_id === currentUserId
-//       );
-//     this.filterdTravels.set(Travels);
-//   }
-// }
 import { Component, OnInit, inject, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { TravelService } from '../../shared/travel.service';
 import { travel } from '../../shared/travel';
 import { UserService } from '../../shared/user.service';
@@ -55,7 +10,7 @@ import { User } from '../../shared/user';
 @Component({
   selector: 'app-mytrips',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './mytrips.component.html',
   styleUrls: ['./mytrips.component.css']
 })

@@ -9,7 +9,13 @@
     <div class="bg-gray-200 min-h-screen py-8">
         <div class="max-w-3xl mx-auto px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
           <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">My Trips</h2>
-      
+          
+          <div class="mb-8">
+            <a routerLink="/posttravel" class="block w-full bg-emerald-500 hover:bg-emerald-600 text-white text-center py-4 px-6 rounded-lg text-lg font-medium transition-colors">
+              Add New Trip
+            </a>
+          </div>
+
           @if (isLoading()) {
             <div class="text-center text-gray-600">
               Loading your trips...
