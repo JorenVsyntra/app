@@ -4,6 +4,8 @@ import { TravelService } from '../../shared/travel.service';
 import { travel } from '../../shared/travel';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../shared/auth.service';
+import { passenger } from '../../shared/passenger';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-homepage',
@@ -30,11 +32,20 @@ export class HomepageComponent implements OnInit {
 }
 
 async joinTrip(travelId: number) {
+  const userId = localStorage.getItem('user_id');
+  if (!userId) {
+    console.error('No user ID found');
+    return;
+  }
+  const passenger: passenger = {
+    travel_id: travelId,
+    user_id: Number(userId)
+  };
+
   try {
-    await this.travelService.joinTrip(travelId);
-    // Refresh travels after successful join
-    await this.loadTravels();
-  } catch (error: any) {
+    await this.travelService.joinTrip(passenger);
+    await this.loadTravels(); // Refresh the travel list
+  } catch (error) {
     console.error('Error joining trip:', error);
     // You might want to show an error message to the user here
   }
@@ -64,6 +75,7 @@ hasUserJoined(travel: travel): boolean {
     const travels = this.travelService.travels();
     this.travels.set(travels);
     this.filteredTravels.set(travels);
+    console.log('filtered',this.filteredTravels());
   }
 
   // async loadTravels() {
@@ -95,7 +107,7 @@ hasUserJoined(travel: travel): boolean {
   showAll() {
     this.filteredTravels.set(this.travels());
     this.searchControl.setValue('');
-    console.log(this.travels().start_city_name);
+    console.log(this.travels());
   }
 
  showOnlyAvailable() {

@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { travel } from './travel';
+import { passenger } from './passenger';
 
 @Injectable({
   providedIn: 'root'
@@ -83,31 +84,38 @@ export class TravelService {
 
 
   async loadTravels() {
-    const userId = localStorage.getItem('user_id');
-    const response = await fetch(`${this.apiUrl}?user_id=${userId}`);
-    if (!response.ok) throw new Error('Failed to load travels');
-    const data = await response.json();
-    this.travels.set(data);
+    try {
+      const response = await fetch(this.apiUrl);
+      if (!response.ok) throw new Error('Failed to load travels');
+      const data = await response.json();
+      this.travels.set(data.travels);
+      console.log('Travels loaded:', this.travels());
+    } catch (error) {
+      console.error('Error loading travels:', error);
+      throw error;
+    }
   }
 
-  async joinTrip(travelId: number) {
+  async joinTrip(passenger: passenger) {
     try {
-      const userId = localStorage.getItem('user_id');
-      const response = await fetch(`${this.apiUrl2}`, {
+      console.log('Sending passenger data:', passenger);
+      console.log('JSON stringified:', JSON.stringify(passenger));
+      const response = await fetch(this.apiUrl2, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({ user_id: userId, travel_id: travelId })
+        body: JSON.stringify(passenger)
       });
   
-      const data = await response.json();
-  
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to join travel');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to join travel');
       }
   
+      const data = await response.json();
+      console.log('Response data:', data);
       await this.loadTravels(); // Refresh travels data
       return data;
   

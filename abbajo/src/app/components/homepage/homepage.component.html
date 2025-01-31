@@ -67,7 +67,7 @@
   
 
   <div class="space-y-4">
-    @for (travel of filteredTravels(); track travel.id) {
+    @for (travel of filteredTravels(); track travel.travel_id) {
       <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
         <!-- Existing travel info -->
         <div class="flex justify-between items-center mb-2">
@@ -96,14 +96,14 @@
             @if (!isUserDriver(travel.driver_id)) {
               @if (!travel.has_joined) {
                 <button 
-                  (click)="joinTrip(travel.id)"
+                  (click)="joinTrip(travel.travel_id)"
                   [disabled]="travel.travel_av_seats <= travel.passengers_count"
                   class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-300">
                   {{ travel.travel_av_seats <= travel.passengers_count ? 'Full' : 'Join Trip' }}
                 </button>
               } @else {
                 <button 
-                  (click)="cancelTrip(travel.id)"
+                  (click)="cancelTrip(travel.travel_id)"
                   class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
                   Cancel Trip
                 </button>
