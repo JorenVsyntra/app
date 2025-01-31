@@ -26,16 +26,22 @@ export class MytripsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    // Assuming you want to load trips for a specific user
-    const storedUserId = localStorage.getItem('user_id');
-    if (storedUserId) {
-      this.loadUserAndTrips(parseInt(storedUserId, 10));
-    }
-    this.loadtravels();
+    this.loadTravels();
   }
-loadtravels () {
-  this.travelService.loadTravels();
-}
+
+  async loadTravels() {
+    await this.travelService.loadTravels();
+    const userId = localStorage.getItem('user_id');
+    const joinedTripIds = this.travelService.joinedTrips();
+    
+    // Filter travels that user has joined
+    const userTravels = this.travelService.travels().filter(travel => 
+      travel.driver_id === Number(userId) || 
+      joinedTripIds.includes(travel.id)
+    );
+    
+    this.filteredTravels.set(userTravels);
+  }
   loadUserAndTrips(userId: number) {
     // Load user first, then filter travels
     this.userService.loadUser(userId).then(() => {

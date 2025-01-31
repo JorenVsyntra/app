@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TravelService } from '../../shared/travel.service';
 import { travel } from '../../shared/travel';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../shared/auth.service';
 
 @Component({
   selector: 'app-homepage',
@@ -16,6 +17,43 @@ export class HomepageComponent implements OnInit {
   travels = signal<travel[]>([]);
   filteredTravels = signal<travel[]>([]);
   searchControl = new FormControl('');
+  private authService = inject(AuthService);
+  joinedTrips = this.travelService.joinedTrips;  
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  isUserDriver(driverId: number) {
+    const userId = this.authService.getUserId();
+    return userId !== null ? Number(userId) === driverId : false;
+}
+
+async joinTrip(travelId: number) {
+  try {
+    await this.travelService.joinTrip(travelId);
+    // Refresh travels after successful join
+    await this.loadTravels();
+  } catch (error: any) {
+    console.error('Error joining trip:', error);
+    // You might want to show an error message to the user here
+  }
+}
+
+async cancelTrip(tripId: number) {
+  try {
+    await this.travelService.leaveTrip(tripId);
+    await this.loadTravels(); // Refresh the travel list
+  } catch (error) {
+    console.error('Error canceling trip:', error);
+  }
+}
+
+// hasUserJoined is now based on the has_joined property from backend
+hasUserJoined(travel: travel): boolean {
+  return travel.has_joined || false;
+}
+
 
   ngOnInit() {
     this.loadTravels();
@@ -23,9 +61,27 @@ export class HomepageComponent implements OnInit {
 
   async loadTravels() {
     await this.travelService.loadTravels();
-    this.travels.set(this.travelService.travels());
-    this.filteredTravels.set(this.travels());
+    const travels = this.travelService.travels();
+    this.travels.set(travels);
+    this.filteredTravels.set(travels);
   }
+
+  // async loadTravels() {
+  //   await this.travelService.loadTravels();
+  //   const travels = this.travelService.travels();
+    
+  //   // Validate that each travel has an ID
+  //   const validTravels = travels.filter(travel => {
+  //     if (!travel.id) {
+  //       console.warn('Travel missing ID:', travel);
+  //       return false;
+  //     }
+  //     return true;
+  //   });
+    
+  //   this.travels.set(validTravels);
+  //   this.filteredTravels.set(validTravels);
+  // }
 
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
@@ -39,10 +95,11 @@ export class HomepageComponent implements OnInit {
   showAll() {
     this.filteredTravels.set(this.travels());
     this.searchControl.setValue('');
+    console.log(this.travels().start_city_name);
   }
 
  showOnlyAvailable() {
-     const filtered = this.travels().filter(travel => travel.passengers_count < 2);
+     const filtered = this.travels().filter(travel => travel.passengers_count < travel.travel_av_seats);
      this.filteredTravels.set(filtered);
      this.searchControl.setValue('');
    }

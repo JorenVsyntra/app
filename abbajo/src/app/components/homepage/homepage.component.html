@@ -69,23 +69,48 @@
   <div class="space-y-4">
     @for (travel of filteredTravels(); track travel.id) {
       <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+        <!-- Existing travel info -->
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-lg font-semibold">
             {{ travel.start_city_name }} → {{ travel.destination_city_name }}
           </h3>
           <span class="text-gray-600">{{ travel.travel_date }}</span>
-          <!-- <span class="text-gray-600">{{ travel.av_travel }}</span> -->
         </div>
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p class="text-gray-600">Distance: {{ travel.travel_km }}km</p>
-            <p class="text-gray-600 font-bold">Fee: €{{ travel.travel_fee }}</p>
+            <p class="text-gray-600">Fee: €{{ travel.travel_fee }}</p>
+            <p class="text-gray-600 font-bold">Price: €{{ travel.travel_price }}</p>
+
           </div>
           <div>
             <p class="text-gray-600">Driver: {{ travel.driver_firstname }} {{ travel.driver_lastname }}</p>
             <p class="text-gray-600">Vehicle: {{ travel.car_type }}</p>
+            <p class="text-gray-600">Available seats: {{ travel.travel_av_seats - travel.passengers_count }}</p>
           </div>
         </div>
+
+        <!-- Action buttons -->
+        @if (isLoggedIn()) {
+          <div class="mt-4 flex justify-end space-x-2">
+            @if (!isUserDriver(travel.driver_id)) {
+              @if (!travel.has_joined) {
+                <button 
+                  (click)="joinTrip(travel.id)"
+                  [disabled]="travel.travel_av_seats <= travel.passengers_count"
+                  class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-300">
+                  {{ travel.travel_av_seats <= travel.passengers_count ? 'Full' : 'Join Trip' }}
+                </button>
+              } @else {
+                <button 
+                  (click)="cancelTrip(travel.id)"
+                  class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                  Cancel Trip
+                </button>
+              }
+            }
+          </div>
+        }
       </div>
     } @empty {
       <div class="text-center text-gray-600 py-8">

@@ -22,5 +22,8 @@ export interface travel {
     car_carseats: number;
     travel_av_seats: number;
     passengers_count: number;
+    travel_id: number;
+    travel_price: number;
+    has_joined?: boolean;
   }
    
