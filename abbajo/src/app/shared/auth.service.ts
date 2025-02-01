@@ -58,7 +58,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('user_id');
-    localStorage.removeItem('joined_trips');  
     localStorage.removeItem('token');
     this.tokenSignal.set(null);
     this.userIdSignal.set(null);

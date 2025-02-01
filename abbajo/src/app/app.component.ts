@@ -1,6 +1,6 @@
 import { Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
 //import { ProfilePageComponent } from './components/profilepage/profilepage.component';
 
@@ -12,13 +12,16 @@ import { AuthService } from './shared/auth.service';
 })
 export class AppComponent {
   private authService = inject(AuthService);
+  
 
   constructor() {}
   isLoggedIn() {
     return this.authService.isLoggedIn();
   }
   logout() {
+    const router = inject(Router);
     this.authService.logout();
+    router.navigate(['/logingin']);
   }
   title = 'abbajo';
 //filteredPosts: any;
