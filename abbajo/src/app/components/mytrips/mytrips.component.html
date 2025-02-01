@@ -28,11 +28,11 @@
             </div>
           }
       
-          @for (trip of filteredTravels(); track trip.id) {
+          @for (trip of filteredTravels(); track trip.travel_id) {
             <div class="mb-6 p-6 border border-gray-300 rounded-lg">
               <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
                 <h3 class="text-xl font-bold text-gray-800">
-                  {{ trip.start_city_name }} to {{ trip.destination_city_name }}
+                  {{ trip.start_city_name }} → {{ trip.destination_city_name }}
                 </h3>
                 <span class="text-gray-600">{{ trip.travel_date }}</span>
               </div>
@@ -47,6 +47,14 @@
                   <p class="text-gray-800">{{ trip.destination_address }}</p>
                 </div>
                 <div>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Driver:</label>
+                  <p class="text-gray-800">{{ trip.driver_firstname }} {{ trip.driver_lastname}} </p>
+                </div>
+                <div>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Vehicle:</label>
+                  <p class="text-gray-800">{{ trip.car_type }}</p>
+                </div>
+                <div>
                   <label class="block text-gray-600 font-medium mb-2 font-bold">Distance:</label>
                   <p class="text-gray-800">{{ trip.travel_km }} km</p>
                 </div>
@@ -55,12 +63,12 @@
                   <p class="text-gray-800">€{{ trip.travel_fee }}</p>
                 </div>
                 <div>
-                  <label class="block text-gray-600 font-medium mb-2 font-bold">Vehicle:</label>
-                  <p class="text-gray-800">{{ trip.car_type }} {{ trip.car_carseats }}</p>
+                  <label class="block text-gray-600 font-medium mb-2 font-bold">Price:</label>
+                  <p class="text-gray-800">€{{ trip.travel_price }}</p>
                 </div>
                 <div>
                   <label class="block text-gray-600 font-medium mb-2 font-bold">Passengers:</label>
-                  <p class="text-gray-800">{{ trip.passengers_count }}</p>
+                  <p class="text-gray-800">{{ trip.passengers_count }} out of {{ trip.travel_av_seats }} seats</p>
                 </div>
               </div>
             </div>

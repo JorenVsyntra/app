@@ -10,7 +10,6 @@ export class TravelService {
   private apiUrl2 = 'http://localhost:8000/api/passengers';
   selectedTravel = signal<travel | null>(null); 
   travels = signal<travel[]>([]);
-  joinedTrips = signal<number[]>([]);
 
   constructor() { }
  

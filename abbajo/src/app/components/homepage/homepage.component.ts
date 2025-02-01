@@ -19,7 +19,6 @@ export class HomepageComponent implements OnInit {
   filteredTravels = signal<travel[]>([]);
   searchControl = new FormControl('');
   private authService = inject(AuthService);
-  joinedTrips = this.travelService.joinedTrips;  
 
   isLoggedIn() {
     return this.authService.isLoggedIn();

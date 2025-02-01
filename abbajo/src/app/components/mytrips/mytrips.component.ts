@@ -6,7 +6,6 @@ import { travel } from '../../shared/travel';
 import { UserService } from '../../shared/user.service';
 import { User } from '../../shared/user';
 
-
 @Component({
   selector: 'app-mytrips',
   standalone: true,
@@ -25,41 +24,36 @@ export class MytripsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    this.loadTravels();
+  async ngOnInit() {
+    await this.loadtravels();
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.fetchMyTrips(parseInt(storedUserId, 10));
+    }
   }
 
-  async loadTravels() {
+  async loadtravels() {
     await this.travelService.loadTravels();
-    const userId = localStorage.getItem('user_id');
-    const joinedTripIds = this.travelService.joinedTrips();
-    
-    // Filter travels that user has joined
-    const userTravels = this.travelService.travels().filter(travel => 
-      travel.driver_id === Number(userId) || 
-      joinedTripIds.includes(travel.id)
-    );
-    
-    this.filteredTravels.set(userTravels);
-  }
-  loadUserAndTrips(userId: number) {
-    // Load user first, then filter travels
-    this.userService.loadUser(userId).then(() => {
-      this.fetchMyTrips(userId);
-      console.log('Trips loaded:', this.travels());
-    }).catch(error => {
-      console.error('Error loading user:', error);
-      this.isLoading.set(false);
-    });
+    console.log('Travels loaded:', this.travels());
   }
 
   fetchMyTrips(userId: number) {
-    // Filter travels for the specific user
-    const userTravels = this.travels().filter(
+    const passengerTravels = this.travels().filter(trip => {
+      // Add null check for passenger_ids
+      if (!trip.passenger_ids) return false;
+      
+      // Split the passenger_ids string and convert to array of numbers
+      const passengerIds = trip.passenger_ids.split(',').map(id => parseInt(id.trim(), 10));
+      return passengerIds.includes(userId);
+    });
+
+    const driverTravels = this.travels().filter(
       trip => trip.driver_id === userId
     );
-    
-    this.filteredTravels.set(userTravels);
+
+    // Combine passenger and driver trips
+    this.filteredTravels.set([...driverTravels, ...passengerTravels]);
+    console.log('Filtered trips:', this.filteredTravels());
     this.isLoading.set(false);
   }
 }
