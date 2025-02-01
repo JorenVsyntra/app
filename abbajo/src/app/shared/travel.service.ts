@@ -89,7 +89,6 @@ export class TravelService {
       if (!response.ok) throw new Error('Failed to load travels');
       const data = await response.json();
       this.travels.set(data.travels);
-      console.log('Travels loaded:', this.travels());
     } catch (error) {
       console.error('Error loading travels:', error);
       throw error;
@@ -98,8 +97,6 @@ export class TravelService {
 
   async joinTrip(passenger: passenger) {
     try {
-      console.log('Sending passenger data:', passenger);
-      console.log('JSON stringified:', JSON.stringify(passenger));
       const response = await fetch(this.apiUrl2, {
         method: 'POST',
         headers: {
@@ -115,8 +112,8 @@ export class TravelService {
       }
   
       const data = await response.json();
-      console.log('Response data:', data);
       await this.loadTravels(); // Refresh travels data
+      console.log('Joined trip:', data);
       return data;
   
     } catch (error) {
@@ -125,74 +122,20 @@ export class TravelService {
     }
   }
 
-  async leaveTrip(travelId: number) {
-    const userId = localStorage.getItem('user_id');
-    const response = await fetch(`${this.apiUrl}/${travelId}/leave`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ user_id: userId })
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to leave trip');
+  async leaveTrip(travel_id: number) {
+    try {
+      const userId = localStorage.getItem('user_id');
+      await fetch(`${this.apiUrl2}/${travel_id}/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
     }
-
-    await this.loadTravels(); // Refresh travels to update join status
-  }
-
-async cancelTrip(tripId: number) {
-  try {
-    const userId = localStorage.getItem('user_id');
-    if (!userId) throw new Error('User must be logged in');
-
-    // Update URL structure to match Laravel route
-    const response = await fetch(`${this.apiUrl}/${tripId}/leave?user_id=${userId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to cancel trip');
+    catch (error) {
+      console.error('Error leaving trip:', error);
+      throw error;
     }
-
-    // Update local state
-    const currentJoined = JSON.parse(localStorage.getItem('joined_trips') || '[]');
-    const updatedJoined = currentJoined.filter((id: number) => id !== tripId);
-    localStorage.setItem('joined_trips', JSON.stringify(updatedJoined));
-    this.joinedTrips.set(updatedJoined);
-
-    await this.loadTravels();
-    return true;
-  } catch (error) {
-    console.error('Error canceling trip:', error);
-    throw error;
   }
-}
-
-  // async loadTravels() {
-  //   try {
-  //     const response = await fetch(this.apiUrl);
-  //     if (!response.ok) throw new Error('Failed to load travels');
-  //     const data = await response.json();
-      
-  //     // Map travel_id to id
-  //     const mappedTravels = data.travels.map((travel: travel) => ({
-  //       ...travel,
-  //       id: travel.travel_id
-  //     }));
-      
-  //     this.travels.set(mappedTravels);
-  //     console.log('Travels loaded:', this.travels());
-  //   } catch (error) {
-  //     console.error('Error loading travels:', error);
-  //     throw error;
-  //   }
-  // }
 }

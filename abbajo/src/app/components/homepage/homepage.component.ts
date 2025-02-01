@@ -5,7 +5,6 @@ import { travel } from '../../shared/travel';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../shared/auth.service';
 import { passenger } from '../../shared/passenger';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-homepage',
@@ -44,25 +43,28 @@ async joinTrip(travelId: number) {
 
   try {
     await this.travelService.joinTrip(passenger);
-    await this.loadTravels(); // Refresh the travel list
+    await this.loadTravels();
   } catch (error) {
     console.error('Error joining trip:', error);
-    // You might want to show an error message to the user here
   }
 }
 
-async cancelTrip(tripId: number) {
+async leaveTrip(travel_id: number) {
   try {
-    await this.travelService.leaveTrip(tripId);
-    await this.loadTravels(); // Refresh the travel list
+    await this.travelService.leaveTrip(travel_id);
+    await this.loadTravels(); 
+    console.log('Trip left:', travel_id);
   } catch (error) {
     console.error('Error canceling trip:', error);
   }
 }
 
-// hasUserJoined is now based on the has_joined property from backend
 hasUserJoined(travel: travel): boolean {
-  return travel.has_joined || false;
+  const userId = this.authService.getUserId();
+  if (!userId || !travel.passenger_ids) return false;
+  
+  const passengerIds = travel.passenger_ids.split(',').map(Number);
+  return passengerIds.includes(Number(userId));
 }
 
 
@@ -75,25 +77,7 @@ hasUserJoined(travel: travel): boolean {
     const travels = this.travelService.travels();
     this.travels.set(travels);
     this.filteredTravels.set(travels);
-    console.log('filtered',this.filteredTravels());
   }
-
-  // async loadTravels() {
-  //   await this.travelService.loadTravels();
-  //   const travels = this.travelService.travels();
-    
-  //   // Validate that each travel has an ID
-  //   const validTravels = travels.filter(travel => {
-  //     if (!travel.id) {
-  //       console.warn('Travel missing ID:', travel);
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-    
-  //   this.travels.set(validTravels);
-  //   this.filteredTravels.set(validTravels);
-  // }
 
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
@@ -107,7 +91,6 @@ hasUserJoined(travel: travel): boolean {
   showAll() {
     this.filteredTravels.set(this.travels());
     this.searchControl.setValue('');
-    console.log(this.travels());
   }
 
  showOnlyAvailable() {

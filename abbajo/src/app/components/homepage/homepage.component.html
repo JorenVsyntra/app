@@ -94,17 +94,21 @@
         @if (isLoggedIn()) {
           <div class="mt-4 flex justify-end space-x-2">
             @if (!isUserDriver(travel.driver_id)) {
-              @if (!travel.has_joined) {
+              @if (!hasUserJoined(travel)) {
                 <button 
                   (click)="joinTrip(travel.travel_id)"
                   [disabled]="travel.travel_av_seats <= travel.passengers_count"
-                  class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-300">
-                  {{ travel.travel_av_seats <= travel.passengers_count ? 'Full' : 'Join Trip' }}
+                  class="px-4 py-2 rounded-md transition-colors duration-200"
+                  [ngClass]="{
+                    'bg-green-500 hover:bg-green-600 text-white': travel.travel_av_seats > travel.passengers_count,
+                    'bg-gray-300 text-gray-500 cursor-not-allowed': travel.travel_av_seats <= travel.passengers_count
+                  }">
+                  {{ travel.travel_av_seats <= travel.passengers_count ? 'Trip Full' : 'Join Trip' }}
                 </button>
               } @else {
                 <button 
-                  (click)="cancelTrip(travel.travel_id)"
-                  class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                  (click)="leaveTrip(travel.travel_id)"
+                  class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200">
                   Cancel Trip
                 </button>
               }

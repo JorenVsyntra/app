@@ -24,6 +24,6 @@ export interface travel {
     passengers_count: number;
     travel_id: number;
     travel_price: number;
-    has_joined?: boolean;
+    passenger_ids: string;
   }
    
