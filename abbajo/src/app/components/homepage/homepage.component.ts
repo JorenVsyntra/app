@@ -76,6 +76,7 @@ hasUserJoined(travel: travel): boolean {
     const travels = this.travelService.travels();
     this.travels.set(travels);
     this.filteredTravels.set(travels);
+    console.log('Travels loaded:', travels);
   }
 
   onSearch(event: Event) {

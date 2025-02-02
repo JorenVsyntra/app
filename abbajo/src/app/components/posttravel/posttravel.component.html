@@ -10,7 +10,7 @@
     <div class="max-w-3xl mx-auto my-8 px-8 py-8 sm:px-16 sm:py-16 bg-white rounded-lg shadow-md">
         <h2 class="text-center text-gray-800 text-2xl font-semibold mb-8">Create a New Trip</h2>
         <form [formGroup]="travelForm" (ngSubmit)="onSubmit()" class="space-y-6">
-            <div class="grid grid-cols-8 gap-4 mb-6">
+            <div class="grid grid-cols-8 gap-4">
                 <!-- Search StartLocation -->
                 <div class="col-span-3">
                         <label class="block mb-2 font-medium text-gray-600">Start Location</label>
@@ -58,14 +58,31 @@
                     </div>
                     }
                 </div>
-
-                <!-- Date -->
+                    <!-- Date -->
                 <div class="col-span-2">
                     <label class="block mb-2 text-gray-600 font-medium">Date</label>
                     <input
                         type="date"
                         id="date"
                         formControlName="date"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
+            </div>
+            <div class="grid grid-cols-8 gap-4 mb-6">
+                <div class="col-span-3">
+                    <input
+                        type="text"
+                        formControlName="destAddress"
+                        placeholder="Address"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                </div>
+                <div class="col-span-3">
+                    <input
+                        type="text"
+                        formControlName="startAddress"
+                        placeholder="Address"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                 </div>

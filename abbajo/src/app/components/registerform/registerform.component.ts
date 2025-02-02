@@ -1,21 +1,21 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router} from '@angular/router';
 import { CityService } from '../../shared/city.service';
 import { city } from '../../shared/city';
-import { RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './registerform.component.html',
   styleUrls: ['./registerform.component.css'],
 })
 export class RegisterComponent implements OnInit {
   private cityService = inject(CityService);
+  private router = inject(Router);
   cities = this.cityService.cities;
   registrationForm: any;
   constructor() {
@@ -70,12 +70,13 @@ carModels: any;
       });
 
       const data = await response.json();
+      if (response.ok) {
+        console.log('Registration successful:', data);
+        this.router.navigate(['/logingin']);
+      }
       if (!response.ok) {
         throw new Error(data.message || 'Registration failed');
       }
-      
-      console.log('Registration successful:', data);
-      // Handle successful registration (e.g., redirect to login)
       
     } catch (error) {
       console.error('Registration error:', error);

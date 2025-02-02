@@ -1,5 +1,6 @@
 import { Component, OnInit, Signal, inject, signal, effect } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CityService } from '../../shared/city.service';
 import { city } from '../../shared/city';
@@ -19,6 +20,7 @@ import { travel } from '../../shared/travel';
   styleUrls: ['./posttravel.component.css'],
   })
 export class PosttravelComponent implements OnInit {
+  private router = inject(Router);
   private travelService = inject(TravelService);
   private userService = inject(UserService);
   private cityService = inject(CityService);
@@ -36,6 +38,8 @@ export class PosttravelComponent implements OnInit {
   travelForm = new FormGroup({
     destination_id: new FormControl<number | null>(null),
     startlocation_id: new FormControl<number | null>(null),
+    startAddress: new FormControl(''),
+    destAddress: new FormControl(''),
     date: new FormControl(''),
     fee: new FormControl<number | null>(null),
     km: new FormControl<number | null>(null),
@@ -53,6 +57,7 @@ export class PosttravelComponent implements OnInit {
       const km = this.travelForm.get('km')?.value ?? 0;
       const fee = this.travelForm.get('fee')?.value ?? 0;
       const calculatedPrice = (km / 100) * fee;
+      const roundedPrice = Number(calculatedPrice.toFixed(2));
 
       if (user) {
         console.log('Current user:', user);
@@ -61,18 +66,19 @@ export class PosttravelComponent implements OnInit {
           car_id: user.car?.type,
           searchStart: this.startLoc()?.name,
           searchDest: this.destLoc()?.name,
-          price: calculatedPrice 
+          price: roundedPrice 
         }, { emitEvent: false });
       }
     });
-    // Add listeners to update price when km or fee changes
+  
     this.travelForm.get('km')?.valueChanges.subscribe(() => {
       const km = this.travelForm.get('km')?.value ?? 0;
       const fee = this.travelForm.get('fee')?.value ?? 0;
       const calculatedPrice = (km / 100) * fee;
+      const roundedPrice = Number(calculatedPrice.toFixed(2));
       
       this.travelForm.patchValue({ 
-        price: calculatedPrice 
+        price: roundedPrice 
       }, { emitEvent: false });
     });
 
@@ -80,9 +86,10 @@ export class PosttravelComponent implements OnInit {
       const km = this.travelForm.get('km')?.value ?? 0;
       const fee = this.travelForm.get('fee')?.value ?? 0;
       const calculatedPrice = (km / 100) * fee;
+      const roundedPrice = Number(calculatedPrice.toFixed(2));
       
       this.travelForm.patchValue({ 
-        price: calculatedPrice 
+        price: roundedPrice 
       }, { emitEvent: false });
     });
   }
@@ -149,30 +156,34 @@ export class PosttravelComponent implements OnInit {
   }
 
   async onSubmit() {
+    const requestBody = {
+      destCity_id: this.destLoc()?.id,
+      startCity_id: this.startLoc()?.id,
+      startAddress: this.travelForm.value.startAddress!,
+      destAddress: this.travelForm.value.destAddress!,
+      date: this.travelForm.value.date!,
+      fee: this.travelForm.value.fee!,
+      km: this.travelForm.value.km!,
+      user_id: this.selectedUser()?.id,
+      car_id: this.selectedUser()?.car.id,
+      av_seats: this.travelForm.value.av_seats!,
+      price: this.travelForm.value.price!,
+    };
+    console.log('Request body:', requestBody);
+
     try {
       const response = await fetch('http://localhost:8000/api/travels', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          destination_id: this.destLoc()?.id,
-          startlocation_id: this.startLoc()?.id,
-          date: this.travelForm.value.date!,
-          fee: this.travelForm.value.fee!,
-          km: this.travelForm.value.km!,
-          user_id: this.selectedUser()?.id,
-          car_id: this.selectedUser()?.car.id,
-          av_seats: this.travelForm.value.av_seats!,
-          price: this.travelForm.value.price!,
-        })
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
       if (!response.ok) {
         if (response.status === 422) {
           console.error('Validation errors:', data.errors);
-          // You could display these errors in your template
           Object.keys(data.errors).forEach(key => {
             const control = this.travelForm.get(key);
             if (control) {
@@ -184,13 +195,13 @@ export class PosttravelComponent implements OnInit {
         }
         throw new Error(data.message || 'posting trip failed');
       }
-      
-      console.log('Trip posted:', data);
-      // Handle successful registration (e.g., redirect to login)
+      if (response.ok) {
+        await this.router.navigate(['/mytrips']);
+        console.log('Trip posted:', data);
+      }
       
     } catch (error) {
       console.error('Trip posting error:', error);
-      // Handle registration error (show error message to user)
     }
   }
 
