@@ -74,7 +74,7 @@
               <!-- Active: "bg-gray-100 outline-none", Not Active: "" -->
               @if (isLoggedIn()) {
                 <a routerLink="/profile"  class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0" style="z-index: 10">Your Profile</a>
-                <a routerLink="/logingin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" (mousedown)="logout()" tabindex="-1" id="logout">log out</a>
+                <a routerLink="/logingin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" (mousedown)="logout()" tabindex="-1" id="logout">Log out</a>
               }
               @else {
                 <a routerLink="/logingin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Login</a>               
