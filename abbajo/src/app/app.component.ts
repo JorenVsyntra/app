@@ -12,16 +12,17 @@ import { AuthService } from './shared/auth.service';
 })
 export class AppComponent {
   private authService = inject(AuthService);
-  
+  private router = inject(Router); // Move this to class level
 
   constructor() {}
+  
   isLoggedIn() {
     return this.authService.isLoggedIn();
   }
-  logout() {
-    const router = inject(Router);
+
+  async logout() {
     this.authService.logout();
-    router.navigate(['/logingin']);
+    await this.router.navigate(['/logingin']); // Use class level router
   }
   title = 'abbajo';
 //filteredPosts: any;
